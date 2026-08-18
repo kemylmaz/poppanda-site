@@ -117,7 +117,7 @@ img { max-width: 100%; height: auto; display: block; }
   label,
   [role='button'],
   [role='link'] {
-    cursor: url('../assets/cursor.png') 24 8, pointer;
+    cursor: url('../assets/cursor.png') 13 0, pointer;
   }
 
   a:has(input),
