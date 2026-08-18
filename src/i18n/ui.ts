@@ -98,3 +98,12 @@ export function localizePath(path: string, lang: Lang): string {
   const clean = path.startsWith('/') ? path : `/${path}`;
   return lang === defaultLang ? clean : `/${lang}${clean === '/' ? '' : clean}`;
 }
+
+/**
+ * Canonical form of a path: language prefix plus a trailing slash, matching
+ * the URLs the site actually serves.
+ */
+export function canonicalPath(path: string, lang: Lang): string {
+  const localized = localizePath(path, lang);
+  return localized.endsWith('/') ? localized : `${localized}/`;
+}
