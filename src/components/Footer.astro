@@ -1,18 +1,11 @@
 ---
-import SocialLinks from './SocialLinks.astro';
-import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import { useTranslations, type Lang } from '../i18n/ui';
 import { site } from '../data/projects';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 const year = new Date().getFullYear();
-
-const nav = [
-  { href: '/games', label: t('nav.games') },
-  { href: '/video', label: t('nav.video') },
-  { href: '/about', label: t('nav.about') },
-];
 ---
 
 <footer class="site-foot">
@@ -21,18 +14,6 @@ const nav = [
       <h2>{t('contact.title')}</h2>
       <p class="lead">{t('contact.lead')}</p>
       <a class="mail" href={`mailto:${site.email}`}>{site.email}</a>
-    </div>
-
-    <div class="cols">
-      <nav aria-label={t('nav.primary')}>
-        <ul>
-          {nav.map((item) => (
-            <li><a href={localizePath(item.href, lang)}>{item.label}</a></li>
-          ))}
-        </ul>
-      </nav>
-
-      <SocialLinks links={site.links} size="small" />
     </div>
 
     <p class="fine">© {year} {site.name}. {t('footer.rights')}</p>
@@ -71,39 +52,10 @@ const nav = [
 
   .mail:hover { text-decoration-color: var(--yellow); }
 
-  .cols {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-4);
+  .fine {
+    margin: 0;
     padding-top: var(--space-4);
     border-top: 3px solid rgba(255, 246, 220, 0.3);
-  }
-
-  .cols ul {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-3);
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .cols nav a {
-    display: inline-flex;
-    align-items: center;
-    min-height: 44px;
-    font-family: var(--font-display);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-  }
-
-  .cols nav a:hover { text-decoration: underline; text-decoration-color: var(--orange); }
-
-  .fine {
-    margin: var(--space-4) 0 0;
     font-size: var(--step--1);
     color: var(--ink-soft);
   }

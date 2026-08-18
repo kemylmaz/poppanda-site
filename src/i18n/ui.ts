@@ -12,13 +12,14 @@ export const ui = {
     'nav.about': 'About',
     'nav.contact': 'Contact',
 
-    'home.kicker': 'Games & moving pictures',
-    'home.title': 'I build small worlds',
+    'home.kicker': 'Poppanda Interactive',
+    'home.title': 'Indie game studio based in Türkiye',
     'home.lead':
-      'I make games and videos out of a room in Turkey. Some of them are finished. All of them are honest.',
+      'We make cozy tycoon and automation games, built around small playful minigames, and ship them to mobile and PC at the same time.',
     'home.cta.games': 'See the games',
     'home.cta.video': 'See the video work',
-    'home.featured': 'Selected work',
+    'home.featured': 'Play now',
+    'home.playLead': 'Playable in the browser, no download.',
     'home.all': 'Everything',
 
     'games.kicker': 'Selected projects',
@@ -66,13 +67,14 @@ export const ui = {
     'nav.about': 'Hakkımızda',
     'nav.contact': 'İletişim',
 
-    'home.kicker': 'Oyunlar ve hareketli görüntüler',
-    'home.title': 'Küçük dünyalar kuruyorum',
+    'home.kicker': 'Poppanda Interactive',
+    'home.title': 'Türkiye merkezli bağımsız oyun stüdyosu',
     'home.lead':
-      'Türkiye’de bir odadan oyun ve video üretiyorum. Bazıları bitti. Hepsi dürüst.',
+      'Küçük ve eğlenceli mini oyunlar üzerine kurulu cozy tycoon ve otomasyon oyunları yapıyoruz; mobil ve bilgisayara aynı anda çıkarıyoruz.',
     'home.cta.games': 'Oyunlara bak',
     'home.cta.video': 'Video işlerine bak',
-    'home.featured': 'Seçilmiş işler',
+    'home.featured': 'Şimdi oyna',
+    'home.playLead': 'Tarayıcıda oynanır, indirmek gerekmez.',
     'home.all': 'Hepsi',
 
     'games.kicker': 'Seçilmiş projeler',

@@ -13,9 +13,10 @@
   --orange: #F26722;
   --violet: #7A5CC4;
 
-  /* semantic — light */
-  --bg: #FFF6DC;
-  --bg-alt: #FFEFC4;
+  /* semantic — one quiet, warm light theme; the colour lives in the brand
+     marks and the accents, not in the page behind them. */
+  --bg: #F7F5F0;
+  --bg-alt: #EFEBE2;
   --surface: #FFFFFF;
   --ink: #1A1350;
   --ink-soft: #5A5290;
@@ -56,20 +57,6 @@
   --mid: 260ms;
 
   --z-header: 100;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    --bg: #14103C;
-    --bg-alt: #1A1350;
-    --surface: #221A5E;
-    --ink: #FFF6DC;
-    --ink-soft: #B7AEE8;
-    --line: #FFF6DC;
-    --line-soft: rgba(255, 246, 220, 0.22);
-    --shadow-color: #0B0824;
-    --on-accent: #14103C;
-  }
 }
 
 *, *::before, *::after { box-sizing: border-box; }

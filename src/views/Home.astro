@@ -2,24 +2,21 @@
 import Base from '../layouts/Base.astro';
 import GameRow from '../components/GameRow.astro';
 import VideoCard from '../components/VideoCard.astro';
-import Marquee from '../components/Marquee.astro';
 import { useTranslations, localizePath, type Lang } from '../i18n/ui';
-import { games, videos, site } from '../data/projects';
+import { games, videos, team } from '../data/projects';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-const featuredGames = games.filter((g) => g.featured);
+const playable = games.filter((g) => g.playable);
 const featuredVideos = videos.filter((v) => v.featured).slice(0, 2);
 
 const stats = [
   { value: String(games.length), label: t('stat.games') },
   { value: '2026', label: t('stat.since') },
-  { value: '2', label: t('stat.people') },
+  { value: String(team.length), label: t('stat.people') },
 ];
-
-const strip = [site.name, ...games.map((g) => g.title)];
 ---
 
 <Base lang={lang} path="/" title={t('home.title')} description={t('home.lead')}>
@@ -37,7 +34,7 @@ const strip = [site.name, ...games.map((g) => g.title)];
       </div>
 
       <div class="hero__mark">
-        <img src="/media/mark.png" alt="" width="309" height="512" fetchpriority="high" />
+        <img src="/media/mark.png" alt="" width="542" height="900" fetchpriority="high" />
       </div>
     </div>
 
@@ -51,18 +48,19 @@ const strip = [site.name, ...games.map((g) => g.title)];
     </dl>
   </section>
 
-  <Marquee items={strip} />
-
-  {featuredGames.length > 0 && (
+  {playable.length > 0 && (
     <section class="section">
       <div class="wrap">
         <header class="head" data-reveal>
-          <h2>{t('home.featured')}</h2>
+          <div>
+            <h2>{t('home.featured')}</h2>
+            <p class="head__note muted">{t('home.playLead')}</p>
+          </div>
           <a class="more" href={localizePath('/games', lang)}>{t('home.all')}</a>
         </header>
 
         <div class="rows">
-          {featuredGames.map((game, i) => <GameRow game={game} lang={lang} index={i} />)}
+          {playable.map((game, i) => <GameRow game={game} lang={lang} index={i} />)}
         </div>
       </div>
     </section>
@@ -109,7 +107,7 @@ const strip = [site.name, ...games.map((g) => g.title)];
 
   /* The panda leans a little and straightens up when the pointer arrives. */
   .hero__mark img {
-    width: min(100%, 22rem);
+    width: min(100%, 15rem);
     margin-inline: auto;
     transform: rotate(-3deg);
     transition: transform 400ms var(--ease-out);
@@ -158,6 +156,7 @@ const strip = [site.name, ...games.map((g) => g.title)];
   }
 
   .head h2 { margin: 0; }
+  .head__note { margin: 0.35rem 0 0; font-size: var(--step--1); }
 
   .more {
     font-family: var(--font-display);
@@ -178,6 +177,6 @@ const strip = [site.name, ...games.map((g) => g.title)];
   @media (max-width: 56rem) {
     .hero__inner { grid-template-columns: 1fr; }
     .hero__mark { order: -1; }
-    .hero__mark img { width: min(60%, 14rem); }
+    .hero__mark img { width: min(52%, 11rem); }
   }
 </style>

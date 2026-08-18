@@ -23,6 +23,8 @@ export interface Game {
   shots?: { src: string; alt: Localized }[];
   /** YouTube video id for a trailer. */
   youtube?: string;
+  /** Set once a WebGL build is embedded, so the game shows under "Play now". */
+  playable?: boolean;
   playUrl?: string;
   steamUrl?: string;
   sourceUrl?: string;
@@ -32,6 +34,7 @@ export interface Game {
 export const games: Game[] = [
   {
     slug: 'meat-and-eat',
+    playable: true,
     title: 'Meat & Eat',
     formerTitle: 'Shawarma Tycoon',
     tagline: {
@@ -76,6 +79,7 @@ export const games: Game[] = [
   },
   {
     slug: 'minibus-tycoon',
+    playable: true,
     title: 'Minibüs Tycoon — All Aboard!',
     tagline: {
       en: 'Drive the route yourself, then hire someone who drives it better.',
@@ -97,6 +101,7 @@ export const games: Game[] = [
   },
   {
     slug: 'mayor-of-medieval',
+    playable: true,
     title: 'Mayor of Medieval',
     tagline: {
       en: 'Chop wood by hand until you never have to chop wood again.',
@@ -166,17 +171,26 @@ const github = (url: string): SocialLink => ({
   key: 'github', label: 'GitHub', url, color: '#181717',
 });
 
+/** The studio itself — shown above the team on the about page. */
+export const studio = {
+  name: 'Poppanda Interactive',
+  role: { en: 'Independent game studio', tr: 'Bağımsız oyun stüdyosu' },
+  bio: [
+    {
+      en: 'We are an independent game studio founded in Türkiye. We build our games in Unity and make them for mobile and PC.',
+      tr: 'Türkiye’de kurulmuş bağımsız bir oyun stüdyosuyuz. Unity oyun motoru ile geliştirdiğimiz oyunlarımızla mobil ve bilgisayar için projeler yaratıyoruz.',
+    },
+  ] as Localized[],
+  links: [
+    linkedin('https://www.linkedin.com/company/poppanda/?viewAsMember=true'),
+  ] as SocialLink[],
+};
+
 export const team: Person[] = [
   {
     name: 'Kemal Yılmaz',
     role: { en: 'Founder, game developer', tr: 'Kurucu, oyun geliştirici' },
-    bio: [
-      {
-        // TODO: bunu kendi cümlelerinle değiştir.
-        en: 'I make games and video, mostly on my own, mostly in Unity and a timeline.',
-        tr: 'Çoğunlukla tek başıma, çoğunlukla Unity’de ve bir zaman çizelgesinde oyun ve video üretiyorum.',
-      },
-    ],
+    bio: [],
     links: [
       { key: 'itch', label: 'itch.io', url: 'https://kemylmaz.itch.io/', color: '#FA5C5C' },
       { key: 'artstation', label: 'ArtStation', url: 'https://www.artstation.com/kemylmaz', color: '#13AFF0' },
@@ -187,7 +201,7 @@ export const team: Person[] = [
   },
   {
     name: 'Enes Yel',
-    role: { en: '', tr: '' },
+    role: { en: 'Game developer', tr: 'Oyun geliştirici' },
     bio: [],
     links: [
       linkedin('https://www.linkedin.com/in/enes-yel-44a1ab297/'),
@@ -200,7 +214,6 @@ export const site = {
   name: 'Poppanda Interactive',
   shortName: 'Poppanda',
   domain: 'poppanda.net',
-  email: 'hello@poppanda.net',
-  /** Shown in the footer — the studio's own accounts. */
-  links: team[0].links,
+  email: 'kem@poppanda.net',
+  links: studio.links,
 };

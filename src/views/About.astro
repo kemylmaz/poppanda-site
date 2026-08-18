@@ -2,45 +2,43 @@
 import Base from '../layouts/Base.astro';
 import SocialLinks from '../components/SocialLinks.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
-import { team, site } from '../data/projects';
+import { studio, team } from '../data/projects';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
-
-const [lead, ...rest] = team;
 ---
 
-<Base lang={lang} path="/about" title={t('about.title')} description={t('about.lead')} accent="#7A5CC4">
+<Base lang={lang} path="/about" title={t('about.title')} description={studio.bio[0][lang]} accent="#7A5CC4">
   <section class="section">
     <div class="wrap">
       <header class="intro">
         <span class="kicker">{t('about.kicker')}</span>
         <h1>{t('about.title')}</h1>
-        <p class="lead">{t('about.lead')}</p>
+        <hr class="divide" />
       </header>
 
-      <div class="lead-person" data-reveal>
-        <div class="lead-person__text">
-          <h2>{lead.name}</h2>
-          {lead.role[lang] && <p class="role">{lead.role[lang]}</p>}
+      <div class="studio" data-reveal>
+        <div>
+          <h2>{studio.name}</h2>
+          <p class="role">{studio.role[lang]}</p>
           <div class="prose">
-            {lead.bio.map((para) => <p>{para[lang]}</p>)}
+            {studio.bio.map((para) => <p>{para[lang]}</p>)}
           </div>
-          <SocialLinks links={lead.links} />
+          <SocialLinks links={studio.links} />
         </div>
 
-        <img class="lead-person__mark" src="/media/mark.png" alt="" width="309" height="512" loading="lazy" />
+        <img class="studio__mark" src="/media/mark.png" alt="" width="542" height="900" loading="lazy" />
       </div>
     </div>
   </section>
 
-  {rest.length > 0 && (
+  {team.length > 0 && (
     <section class="section band">
       <div class="wrap">
         <h2 data-reveal>{t('about.team')}</h2>
         <div class="people">
-          {rest.map((person, i) => (
+          {team.map((person, i) => (
             <article class="panel person" data-reveal style={`--reveal-delay:${i * 80}ms`}>
               <h3>{person.name}</h3>
               {person.role[lang] && <p class="role">{person.role[lang]}</p>}
@@ -55,17 +53,25 @@ const [lead, ...rest] = team;
 </Base>
 
 <style>
-  .intro { margin-bottom: var(--space-6); }
+  .intro { margin-bottom: var(--space-5); }
 
-  .lead-person {
+  /* A rule instead of a subtitle: the heading lands, then the page opens. */
+  .divide {
+    height: 4px;
+    margin: var(--space-4) 0 0;
+    border: 0;
+    background: var(--line);
+  }
+
+  .studio {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 0.5fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.42fr);
     gap: var(--space-5);
     align-items: center;
   }
 
-  .lead-person__mark {
-    width: min(100%, 16rem);
+  .studio__mark {
+    width: min(100%, 12rem);
     margin-inline: auto;
     transform: rotate(3deg);
     filter: drop-shadow(8px 8px 0 var(--shadow-color));
@@ -97,7 +103,7 @@ const [lead, ...rest] = team;
   .person .role { margin-bottom: var(--space-3); }
 
   @media (max-width: 56rem) {
-    .lead-person { grid-template-columns: 1fr; }
-    .lead-person__mark { display: none; }
+    .studio { grid-template-columns: 1fr; }
+    .studio__mark { display: none; }
   }
 </style>

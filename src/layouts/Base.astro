@@ -29,8 +29,8 @@ const canonical = new URL(canonicalPath(path, lang), Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#F7C51E" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#14103C" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#F7C51E" />
+    <meta name="color-scheme" content="light" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={new URL(canonicalPath(path, 'en'), Astro.site)} />
     <link rel="alternate" hreflang="tr" href={new URL(canonicalPath(path, 'tr'), Astro.site)} />
