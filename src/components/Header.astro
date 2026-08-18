@@ -1,7 +1,6 @@
 ---
-import { useTranslations, localizePath, type Lang } from '../i18n/ui';
-import { site } from '../data/projects';
 import Brand from './Brand.astro';
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
 
 interface Props { lang: Lang; path: string }
 const { lang, path } = Astro.props;
@@ -18,88 +17,136 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
 
 <header class="site-head">
   <div class="wrap bar">
-    <a class="brand" href={localizePath('/', lang)}>
+    <a class="brand" href={localizePath('/', lang)} aria-label={t('nav.home')}>
       <Brand />
     </a>
 
-    <nav aria-label={t('nav.games')}>
-      {nav.map((item) => (
-        <a
-          href={localizePath(item.href, lang)}
-          aria-current={path.startsWith(item.href) ? 'page' : undefined}
-        >{item.label}</a>
-      ))}
-      <a class="lang" href={localizePath(path, other)} hreflang={other} lang={other}>
-        {other.toUpperCase()}
+    <nav aria-label={t('nav.primary')}>
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a
+              href={localizePath(item.href, lang)}
+              aria-current={path.startsWith(item.href) ? 'page' : undefined}
+            >{item.label}</a>
+          </li>
+        ))}
+      </ul>
+
+      <a
+        class="lang"
+        href={localizePath(path, other)}
+        hreflang={other}
+        lang={other}
+        aria-label={other === 'tr' ? 'Türkçe' : 'English'}
+      >
+        <span class="lang__on">{lang.toUpperCase()}</span>
+        <span class="lang__off">{other.toUpperCase()}</span>
       </a>
     </nav>
   </div>
+
+  <div class="rule" aria-hidden="true"></div>
 </header>
 
 <style>
   .site-head {
-    border-bottom: 3px solid var(--navy);
-    background: var(--yellow);
     position: sticky;
     top: 0;
-    z-index: 10;
+    z-index: var(--z-header);
+    background: var(--yellow);
+    color: var(--navy-deep);
   }
+
+  .rule { height: 3px; background: var(--navy-deep); }
 
   .bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
+    gap: var(--space-3);
     flex-wrap: wrap;
-    padding-block: 0.9rem;
+    padding-block: 0.7rem;
   }
 
-  .brand {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.55rem;
-    font-size: 1.3rem;
-    text-decoration: none;
-  }
-
-  /* Narrow screens: the logo takes the whole first row and sits in the middle,
-     with the navigation centred underneath it. */
-  @media (max-width: 40rem) {
-    .bar {
-      justify-content: center;
-      gap: 0.75rem;
-      padding-block: 0.75rem;
-    }
-
-    .brand {
-      flex-basis: 100%;
-      justify-content: center;
-    }
-
-    nav {
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-  }
+  .brand { display: inline-flex; text-decoration: none; }
 
   nav {
     display: flex;
     align-items: center;
-    gap: 1.25rem;
-    font-weight: 700;
+    gap: var(--space-4);
   }
 
-  nav a { text-decoration: none; }
-  nav a:hover { text-decoration: underline; text-decoration-color: var(--orange); }
-  nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--orange); }
+  nav ul {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
+  nav a {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    min-height: 44px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    text-decoration: none;
+  }
+
+  /* The underline grows from the left rather than appearing all at once. */
+  nav ul a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.55rem;
+    height: 3px;
+    background: var(--orange);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--mid) var(--ease-out);
+  }
+
+  nav ul a:hover::after,
+  nav ul a:focus-visible::after,
+  nav ul a[aria-current='page']::after { transform: scaleX(1); }
+
+  /* The language switch reads as a physical toggle: the live one sits on a
+     navy chip, the other waits beside it. */
   .lang {
-    font-size: 0.85rem;
-    letter-spacing: 0.08em;
-    padding: 0.25em 0.7em;
-    border: 2px solid var(--navy);
+    gap: 0.35rem;
+    padding: 0.2rem 0.35rem 0.2rem 0.2rem;
+    border: 3px solid var(--navy-deep);
     border-radius: 999px;
-    background: var(--card);
+    background: rgba(255, 255, 255, 0.55);
+    font-size: var(--step--1);
+    letter-spacing: 0.06em;
+  }
+
+  .lang__on {
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.1rem;
+    padding: 0.15rem 0.35rem;
+    border-radius: 999px;
+    background: var(--navy-deep);
+    color: var(--yellow);
+  }
+
+  .lang__off { padding-right: 0.25rem; opacity: 0.7; }
+  .lang:hover .lang__off { opacity: 1; }
+
+  @media (max-width: 46rem) {
+    .bar { justify-content: center; gap: var(--space-2); padding-block: 0.6rem; }
+    .brand { flex-basis: 100%; justify-content: center; }
+    nav { width: 100%; justify-content: center; flex-wrap: wrap; gap: var(--space-3); }
+    nav ul { gap: var(--space-3); }
+    nav a { font-size: var(--step--1); }
   }
 </style>

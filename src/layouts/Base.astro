@@ -1,9 +1,10 @@
 ---
 import '@fontsource-variable/outfit';
+import '@fontsource-variable/bricolage-grotesque';
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
-import { type Lang, canonicalPath } from '../i18n/ui';
+import { type Lang, canonicalPath, useTranslations } from '../i18n/ui';
 import { site } from '../data/projects';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 }
 
 const { lang, path, title, description, accent } = Astro.props;
+const t = useTranslations(lang);
 const fullTitle = path === '/' ? `${site.name} — ${title}` : `${title} — ${site.name}`;
 const canonical = new URL(canonicalPath(path, lang), Astro.site);
 ---
@@ -27,6 +29,8 @@ const canonical = new URL(canonicalPath(path, lang), Astro.site);
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
+    <meta name="theme-color" content="#F7C51E" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14103C" media="(prefers-color-scheme: dark)" />
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={new URL(canonicalPath(path, 'en'), Astro.site)} />
     <link rel="alternate" hreflang="tr" href={new URL(canonicalPath(path, 'tr'), Astro.site)} />
@@ -43,13 +47,57 @@ const canonical = new URL(canonicalPath(path, lang), Astro.site);
     <meta name="twitter:card" content="summary_large_image" />
 
     {accent && <style set:html={`:root{--accent:${accent}}`} />}
+
+    {/* Marks the document as scripted before first paint, so the reveal
+        animation only hides content when something can bring it back. */}
+    <script is:inline>document.documentElement.classList.add('js');</script>
   </head>
 
   <body>
+    <a class="skip" href="#main">{t('skip')}</a>
     <Header lang={lang} path={path} />
     <main id="main">
       <slot />
     </main>
     <Footer lang={lang} />
+
+    <script>
+      const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const targets = document.querySelectorAll('[data-reveal]');
+
+      if (reduced.matches) {
+        targets.forEach((el) => el.classList.add('is-in'));
+      } else {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (!entry.isIntersecting) return;
+              entry.target.classList.add('is-in');
+              observer.unobserve(entry.target);
+            });
+          },
+          { rootMargin: '0px 0px -12% 0px', threshold: 0.1 },
+        );
+
+        targets.forEach((el) => observer.observe(el));
+      }
+    </script>
+
+    <style>
+      .skip {
+        position: absolute;
+        left: 1rem;
+        top: -4rem;
+        z-index: calc(var(--z-header) + 1);
+        padding: 0.75rem 1.25rem;
+        background: var(--orange);
+        color: #fff;
+        font-weight: 700;
+        border-radius: 0 0 12px 12px;
+        transition: top var(--fast) var(--ease-out);
+      }
+
+      .skip:focus-visible { top: 0; }
+    </style>
   </body>
 </html>

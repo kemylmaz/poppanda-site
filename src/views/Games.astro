@@ -1,6 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
-import GameCard from '../components/GameCard.astro';
+import GameRow from '../components/GameRow.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
 import { games } from '../data/projects';
 
@@ -12,14 +12,24 @@ const t = useTranslations(lang);
 <Base lang={lang} path="/games" title={t('games.title')} description={t('games.lead')}>
   <section class="section">
     <div class="wrap">
-      <h1>{t('games.title')}</h1>
-      <p class="lead">{t('games.lead')}</p>
+      <header class="intro">
+        <span class="kicker">{t('games.kicker')}</span>
+        <h1>{t('games.title')}</h1>
+        <p class="lead">{t('games.lead')}</p>
+      </header>
 
-      <div class="grid" style="margin-top: 3rem">
-        {games.length > 0
-          ? games.map((game) => <GameCard game={game} lang={lang} />)
-          : <p class="muted">{t('empty')}</p>}
-      </div>
+      {games.length > 0 ? (
+        <div class="rows">
+          {games.map((game, i) => <GameRow game={game} lang={lang} index={i} />)}
+        </div>
+      ) : (
+        <p class="muted">{t('empty')}</p>
+      )}
     </div>
   </section>
 </Base>
+
+<style>
+  .intro { margin-bottom: var(--space-6); }
+  .rows { border-bottom: 3px solid var(--line); }
+</style>

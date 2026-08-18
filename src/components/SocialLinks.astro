@@ -47,22 +47,25 @@ const withIcon = links.map((link) => {
     display: inline-flex;
     align-items: center;
     gap: 0.6rem;
+    min-height: 44px;
+    font-family: var(--font-display);
     font-weight: 700;
     text-decoration: none;
-    padding: 0.4rem 1rem 0.4rem 0.4rem;
-    border: 2px solid var(--navy);
+    padding: 0.4rem 1.1rem 0.4rem 0.4rem;
+    border: 3px solid var(--line);
     border-radius: 999px;
-    background: var(--card);
-    box-shadow: 3px 3px 0 var(--navy);
-    transition: transform 120ms ease, box-shadow 120ms ease;
+    background: var(--surface);
+    color: var(--ink);
+    box-shadow: 3px 3px 0 var(--shadow-color);
+    transition: transform var(--fast) var(--ease-out), box-shadow var(--fast) var(--ease-out);
   }
 
   a:hover {
     transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0 var(--brand);
+    box-shadow: 6px 6px 0 var(--brand);
   }
 
-  a:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--navy); }
+  a:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--shadow-color); }
 
   .icon {
     display: grid;
@@ -70,7 +73,7 @@ const withIcon = links.map((link) => {
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    border: 2px solid var(--navy);
+    border: 3px solid var(--line);
     background: var(--brand);
     color: #fff;
     font-weight: 800;

@@ -1,0 +1,74 @@
+---
+interface Props {
+  /** Repeated across the strip. */
+  items: string[];
+  /** Seconds for one full pass. */
+  speed?: number;
+}
+
+const { items, speed = 32 } = Astro.props;
+// Two identical runs sit side by side; translating by exactly half loops
+// seamlessly without a JS ticker.
+const run = [...items, ...items];
+---
+
+<div class="marquee" aria-hidden="true" style={`--speed:${speed}s`}>
+  <div class="track">
+    {[0, 1].map(() => (
+      <ul>
+        {run.map((item) => (
+          <li>{item}<span class="dot"></span></li>
+        ))}
+      </ul>
+    ))}
+  </div>
+</div>
+
+<style>
+  .marquee {
+    overflow: hidden;
+    background: var(--navy-deep);
+    color: var(--yellow);
+    border-block: 3px solid var(--line);
+    padding-block: 0.6rem;
+  }
+
+  .track { display: flex; width: max-content; animation: slide var(--speed) linear infinite; }
+
+  ul {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    list-style: none;
+    margin: 0;
+    padding: 0 0.875rem;
+  }
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 1.75rem;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: var(--step-0);
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    white-space: nowrap;
+  }
+
+  .dot {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--orange);
+  }
+
+  @keyframes slide {
+    to { transform: translateX(-50%); }
+  }
+
+  /* A moving strip is decoration; it stops entirely when motion is unwelcome. */
+  @media (prefers-reduced-motion: reduce) {
+    .track { animation: none; }
+  }
+</style>

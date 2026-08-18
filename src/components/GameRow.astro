@@ -1,0 +1,130 @@
+---
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import type { Game } from '../data/projects';
+
+interface Props { game: Game; lang: Lang; index: number }
+const { game, lang, index } = Astro.props;
+const t = useTranslations(lang);
+const number = String(index + 1).padStart(2, '0');
+---
+
+<a
+  class="row"
+  href={localizePath(`/games/${game.slug}`, lang)}
+  style={`--row-accent:${game.accent}`}
+  data-reveal
+>
+  <span class="num" aria-hidden="true">{number}</span>
+
+  <span class="body">
+    <span class="title">
+      <h3>{game.title}</h3>
+      {game.formerTitle && <span class="former">ex · {game.formerTitle}</span>}
+    </span>
+    <span class="tagline">{game.tagline[lang]}</span>
+  </span>
+
+  <span class="meta">
+    <span class="tag" style="--tag-dot: var(--row-accent)">{t(`status.${game.status}`)}</span>
+    {game.platforms && <span class="platforms">{game.platforms.join(' · ')}</span>}
+  </span>
+
+  <span class="go" aria-hidden="true">
+    <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M5 12h14M13 6l6 6-6 6" />
+    </svg>
+  </span>
+</a>
+
+<style>
+  .row {
+    position: relative;
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto auto;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-3);
+    border-top: 3px solid var(--line);
+    text-decoration: none;
+    isolation: isolate;
+  }
+
+  /* The accent wipes in from the left instead of the whole row blinking. */
+  .row::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: var(--row-accent);
+    opacity: 0.14;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--mid) var(--ease-out);
+  }
+
+  .row:hover::before,
+  .row:focus-visible::before { transform: scaleX(1); }
+
+  .num {
+    font-family: var(--font-display);
+    font-size: var(--step-1);
+    font-weight: 800;
+    color: var(--ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .body { display: grid; gap: 0.35rem; min-width: 0; }
+
+  .title { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
+  .title h3 { margin: 0; font-size: var(--step-2); }
+
+  .former {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .tagline { color: var(--ink-soft); max-width: 52ch; }
+
+  .meta { display: flex; align-items: center; gap: var(--space-3); }
+
+  .platforms {
+    font-size: var(--step--1);
+    font-weight: 600;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  .go {
+    display: grid;
+    place-items: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    border: 3px solid var(--line);
+    background: var(--surface);
+    color: var(--ink);
+    transition: transform var(--fast) var(--ease-out), background var(--fast) var(--ease-out);
+  }
+
+  .row:hover .go,
+  .row:focus-visible .go {
+    transform: translateX(4px);
+    background: var(--row-accent);
+    color: #fff;
+  }
+
+  @media (max-width: 60rem) {
+    .row { grid-template-columns: auto minmax(0, 1fr) auto; }
+    .meta { grid-column: 2 / -1; }
+  }
+
+  @media (max-width: 40rem) {
+    .row { grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); }
+    .go { display: none; }
+    .meta { flex-wrap: wrap; gap: var(--space-2); }
+  }
+</style>

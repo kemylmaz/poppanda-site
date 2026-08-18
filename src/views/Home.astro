@@ -1,9 +1,10 @@
 ---
 import Base from '../layouts/Base.astro';
-import GameCard from '../components/GameCard.astro';
+import GameRow from '../components/GameRow.astro';
 import VideoCard from '../components/VideoCard.astro';
+import Marquee from '../components/Marquee.astro';
 import { useTranslations, localizePath, type Lang } from '../i18n/ui';
-import { games, videos } from '../data/projects';
+import { games, videos, site } from '../data/projects';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
@@ -11,44 +12,76 @@ const t = useTranslations(lang);
 
 const featuredGames = games.filter((g) => g.featured);
 const featuredVideos = videos.filter((v) => v.featured).slice(0, 2);
+
+const stats = [
+  { value: String(games.length), label: t('stat.games') },
+  { value: '2026', label: t('stat.since') },
+  { value: '2', label: t('stat.people') },
+];
+
+const strip = [site.name, ...games.map((g) => g.title)];
 ---
 
-<Base
-  lang={lang}
-  path="/"
-  title={t('home.title')}
-  description={t('home.lead')}
->
+<Base lang={lang} path="/" title={t('home.title')} description={t('home.lead')}>
   <section class="hero">
-    <div class="wrap">
-      <span class="kicker">{t('home.kicker')}</span>
-      <h1>{t('home.title')}</h1>
-      <p class="lead">{t('home.lead')}</p>
+    <div class="wrap hero__inner">
+      <div class="hero__text">
+        <span class="kicker">{t('home.kicker')}</span>
+        <h1>{t('home.title')}</h1>
+        <p class="lead">{t('home.lead')}</p>
 
-      <div class="actions">
-        <a class="btn btn--primary" href={localizePath('/games', lang)}>{t('home.cta.games')}</a>
-        <a class="btn" href={localizePath('/video', lang)}>{t('home.cta.video')}</a>
+        <div class="actions">
+          <a class="btn btn--primary" href={localizePath('/games', lang)}>{t('home.cta.games')}</a>
+          <a class="btn btn--ghost" href={localizePath('/about', lang)}>{t('nav.about')}</a>
+        </div>
+      </div>
+
+      <div class="hero__mark">
+        <img src="/media/mark.png" alt="" width="309" height="512" fetchpriority="high" />
       </div>
     </div>
+
+    <dl class="stats wrap">
+      {stats.map((stat) => (
+        <div>
+          <dt>{stat.label}</dt>
+          <dd>{stat.value}</dd>
+        </div>
+      ))}
+    </dl>
   </section>
+
+  <Marquee items={strip} />
 
   {featuredGames.length > 0 && (
     <section class="section">
       <div class="wrap">
-        <h2>{t('home.featured')}</h2>
-        <div class="grid">
-          {featuredGames.map((game) => <GameCard game={game} lang={lang} />)}
+        <header class="head" data-reveal>
+          <h2>{t('home.featured')}</h2>
+          <a class="more" href={localizePath('/games', lang)}>{t('home.all')}</a>
+        </header>
+
+        <div class="rows">
+          {featuredGames.map((game, i) => <GameRow game={game} lang={lang} index={i} />)}
         </div>
       </div>
     </section>
   )}
 
   {featuredVideos.length > 0 && (
-    <section class="section">
+    <section class="section band">
       <div class="wrap">
-        <h2>{t('video.title')}</h2>
-        <div class="grid">
-          {featuredVideos.map((video) => <VideoCard video={video} lang={lang} />)}
+        <header class="head" data-reveal>
+          <h2>{t('video.title')}</h2>
+          <a class="more" href={localizePath('/video', lang)}>{t('home.all')}</a>
+        </header>
+
+        <div class="videos">
+          {featuredVideos.map((video, i) => (
+            <div data-reveal style={`--reveal-delay:${i * 80}ms`}>
+              <VideoCard video={video} lang={lang} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -56,14 +89,95 @@ const featuredVideos = videos.filter((v) => v.featured).slice(0, 2);
 </Base>
 
 <style>
-  .hero { padding-block: clamp(3.5rem, 2rem + 8vw, 8rem); }
-  .hero h1 { max-width: 14ch; }
-  .hero .lead { max-width: 46ch; }
+  .hero { padding-top: var(--space-6); }
+
+  .hero__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .hero h1 { max-width: 12ch; }
 
   .actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.85rem;
-    margin-top: 2rem;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  /* The panda leans a little and straightens up when the pointer arrives. */
+  .hero__mark img {
+    width: min(100%, 22rem);
+    margin-inline: auto;
+    transform: rotate(-3deg);
+    transition: transform 400ms var(--ease-out);
+    filter: drop-shadow(10px 10px 0 var(--shadow-color));
+  }
+
+  .hero__mark:hover img { transform: rotate(0deg) translateY(-6px); }
+
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
+    gap: var(--space-4);
+    margin-block: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 3px solid var(--line);
+  }
+
+  .stats div { display: grid; gap: 0.15rem; }
+
+  .stats dt {
+    order: 2;
+    font-size: var(--step--1);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--ink-soft);
+  }
+
+  .stats dd {
+    order: 1;
+    margin: 0;
+    font-family: var(--font-display);
+    font-size: var(--step-3);
+    font-weight: 800;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-4);
+  }
+
+  .head h2 { margin: 0; }
+
+  .more {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    text-decoration-color: var(--orange);
+  }
+
+  .rows { border-bottom: 3px solid var(--line); }
+
+  .videos {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  }
+
+  @media (max-width: 56rem) {
+    .hero__inner { grid-template-columns: 1fr; }
+    .hero__mark { order: -1; }
+    .hero__mark img { width: min(60%, 14rem); }
   }
 </style>
