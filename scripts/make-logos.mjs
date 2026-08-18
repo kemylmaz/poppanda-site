@@ -3,7 +3,7 @@
 import sharp from 'sharp';
 
 const jobs = [
-  { in: 'public/media/logo-source.jpg', out: 'public/media/logo.png', height: 120 },
+  { in: 'public/media/logo-source.jpg', out: 'src/assets/logo.png', height: 120 },
   { in: 'public/media/stacked-source.jpg', out: 'public/media/logo-stacked.png', height: 640 },
 ];
 
@@ -24,6 +24,6 @@ const mark = await sharp('public/media/mark-source.png')
   .resize({ height: 1000, kernel: 'lanczos3' })
   .sharpen({ sigma: 1, m1: 0.4, m2: 2 })
   .png({ compressionLevel: 9, palette: true, colours: 64, quality: 92 })
-  .toFile('public/media/mark.png');
+  .toFile('src/assets/mark.png');
 
-console.log(`public/media/mark.png  ${mark.width}x${mark.height}`);
+console.log(`src/assets/mark.png  ${mark.width}x${mark.height}`);

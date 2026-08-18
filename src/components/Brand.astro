@@ -1,8 +1,10 @@
 ---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.png';
 import { site } from '../data/projects';
 ---
 
-<img class="logo" src="/media/logo.png" alt={site.name} width="413" height="120" />
+<Image class="logo" src={logo} alt={site.name} densities={[1, 2]} loading="eager" />
 
 <style>
   .logo {

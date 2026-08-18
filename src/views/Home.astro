@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import mark from '../assets/mark.png';
 import GameRow from '../components/GameRow.astro';
 import VideoCard from '../components/VideoCard.astro';
 import { useTranslations, localizePath, type Lang } from '../i18n/ui';
@@ -34,7 +36,7 @@ const stats = [
       </div>
 
       <div class="hero__mark">
-        <img src="/media/mark.png" alt="" width="609" height="1000" fetchpriority="high" />
+        <Image src={mark} alt="" densities={[1, 2]} loading="eager" />
       </div>
     </div>
 

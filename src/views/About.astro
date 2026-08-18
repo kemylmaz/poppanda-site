@@ -1,5 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
+import { Image } from 'astro:assets';
+import mark from '../assets/mark.png';
 import SocialLinks from '../components/SocialLinks.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
 import { studio, team } from '../data/projects';
@@ -28,7 +30,7 @@ const t = useTranslations(lang);
           <SocialLinks links={studio.links} />
         </div>
 
-        <img class="studio__mark" src="/media/mark.png" alt="" width="609" height="1000" loading="lazy" />
+        <Image class="studio__mark" src={mark} alt="" densities={[1, 2]} loading="lazy" />
       </div>
     </div>
   </section>
