@@ -31,6 +31,7 @@ export const ui = {
 
     'game.role': 'Role',
     'game.engine': 'Engine',
+    'game.platforms': 'Platforms',
     'game.year': 'Year',
     'game.status': 'Status',
     'game.play': 'Play it',
@@ -72,6 +73,7 @@ export const ui = {
 
     'game.role': 'Rol',
     'game.engine': 'Motor',
+    'game.platforms': 'Platformlar',
     'game.year': 'Yıl',
     'game.status': 'Durum',
     'game.play': 'Oyna',

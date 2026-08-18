@@ -12,6 +12,7 @@ const facts = [
   { label: t('game.year'), value: game.year },
   { label: t('game.role'), value: game.role[lang] },
   { label: t('game.engine'), value: game.engine },
+  ...(game.platforms ? [{ label: t('game.platforms'), value: game.platforms.join(', ') }] : []),
 ];
 ---
 
