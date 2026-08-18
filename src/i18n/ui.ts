@@ -35,6 +35,8 @@ export const ui = {
     'game.status': 'Status',
     'game.play': 'Play it',
     'game.source': 'Source code',
+    'game.steam': 'View on Steam',
+    'game.former': 'Previously',
     'game.back': 'All games',
 
     'contact.title': "Let's talk",
@@ -74,6 +76,8 @@ export const ui = {
     'game.status': 'Durum',
     'game.play': 'Oyna',
     'game.source': 'Kaynak kod',
+    'game.steam': 'Steam sayfası',
+    'game.former': 'Eski adı',
     'game.back': 'Tüm oyunlar',
 
     'contact.title': 'Konuşalım',

@@ -18,7 +18,8 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
 <header class="site-head">
   <div class="wrap bar">
     <a class="brand" href={localizePath('/', lang)}>
-      <span class="dot" aria-hidden="true"></span>{site.name}
+      <span class="dot" aria-hidden="true"></span>
+      <span class="word">{site.shortName}</span>
     </a>
 
     <nav aria-label={t('nav.games')}>
@@ -37,8 +38,8 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
 
 <style>
   .site-head {
-    border-bottom: 2px solid var(--ink);
-    background: color-mix(in srgb, var(--cream) 88%, transparent);
+    border-bottom: 3px solid var(--navy);
+    background: color-mix(in srgb, var(--bg) 88%, transparent);
     backdrop-filter: blur(8px);
     position: sticky;
     top: 0;
@@ -57,38 +58,42 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
   .brand {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    font-weight: 700;
-    font-size: 1.25rem;
-    letter-spacing: -0.02em;
+    gap: 0.55rem;
+    font-size: 1.3rem;
     text-decoration: none;
   }
 
   .dot {
-    width: 0.85rem;
-    height: 0.85rem;
+    width: 0.9rem;
+    height: 0.9rem;
     border-radius: 50%;
-    border: 2px solid var(--ink);
-    background: var(--coral);
+    border: 3px solid var(--navy);
+    background: var(--yellow);
+  }
+
+  .word {
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.01em;
   }
 
   nav {
     display: flex;
     align-items: center;
     gap: 1.25rem;
-    font-weight: 600;
+    font-weight: 700;
   }
 
   nav a { text-decoration: none; }
-  nav a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
-  nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--coral); }
+  nav a:hover { text-decoration: underline; text-decoration-color: var(--orange); }
+  nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--orange); }
 
   .lang {
     font-size: 0.85rem;
     letter-spacing: 0.08em;
     padding: 0.25em 0.7em;
-    border: 2px solid var(--ink);
+    border: 2px solid var(--navy);
     border-radius: 999px;
-    background: var(--card);
+    background: var(--yellow);
   }
 </style>

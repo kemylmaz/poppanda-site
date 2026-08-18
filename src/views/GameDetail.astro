@@ -27,11 +27,13 @@ const facts = [
       <a class="back" href={localizePath('/games', lang)}>&larr; {t('game.back')}</a>
 
       <h1>{game.title}</h1>
+      {game.formerTitle && <p class="former muted">{t("game.former")}: {game.formerTitle}</p>}
       <p class="lead">{game.tagline[lang]}</p>
 
-      {(game.playUrl || game.sourceUrl) && (
+      {(game.playUrl || game.steamUrl || game.sourceUrl) && (
         <div class="actions">
-          {game.playUrl && <a class="btn btn--primary" href={game.playUrl}>{t('game.play')}</a>}
+          {game.playUrl && <a class="btn btn--primary" href={game.playUrl}>{t("game.play")}</a>}
+          {game.steamUrl && <a class="btn btn--primary" href={game.steamUrl}>{t("game.steam")}</a>}
           {game.sourceUrl && <a class="btn" href={game.sourceUrl}>{t('game.source')}</a>}
         </div>
       )}
@@ -77,6 +79,12 @@ const facts = [
 </Base>
 
 <style>
+  .former {
+    font-weight: 600;
+    margin: -0.4rem 0 0.9rem;
+    letter-spacing: 0.04em;
+  }
+
   .back {
     display: inline-block;
     font-weight: 600;
@@ -119,8 +127,8 @@ const facts = [
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
   }
   .shots img {
-    border: 2px solid var(--ink);
+    border: 2px solid var(--navy);
     border-radius: var(--radius);
-    box-shadow: 5px 5px 0 var(--ink);
+    box-shadow: 5px 5px 0 var(--navy);
   }
 </style>
