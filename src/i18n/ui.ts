@@ -24,6 +24,7 @@ export const ui = {
     'video.lead': 'Edits, motion pieces and things shot on whatever was nearby.',
     'about.title': 'About',
     'about.lead': 'Who is behind this',
+    'about.team': 'Team',
 
     'status.released': 'Released',
     'status.in-development': 'In development',
@@ -48,7 +49,7 @@ export const ui = {
   tr: {
     'nav.games': 'Oyunlar',
     'nav.video': 'Video',
-    'nav.about': 'Hakkımda',
+    'nav.about': 'Hakkımızda',
     'nav.contact': 'İletişim',
 
     'home.kicker': 'Oyunlar ve hareketli görüntüler',
@@ -64,8 +65,9 @@ export const ui = {
     'games.lead': 'Oynayabileceğin, ya da yakında oynayabileceğin şeyler.',
     'video.title': 'Video',
     'video.lead': 'Kurgular, hareket işleri ve elimde ne varsa onunla çekilmiş şeyler.',
-    'about.title': 'Hakkımda',
-    'about.lead': 'Bunların arkasındaki kişi',
+    'about.title': 'Hakkımızda',
+    'about.lead': 'Bunların arkasındaki ekip',
+    'about.team': 'Ekip',
 
     'status.released': 'Yayında',
     'status.in-development': 'Geliştiriliyor',

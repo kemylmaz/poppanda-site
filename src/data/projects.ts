@@ -142,14 +142,65 @@ export const videos: Video[] = [
   // },
 ];
 
+export interface SocialLink {
+  /** Also the file name looked for under /public/media/social/<key>.png */
+  key: string;
+  label: string;
+  url: string;
+  /** The platform's own colour, used for the icon tile. */
+  color: string;
+}
+
+export interface Person {
+  name: string;
+  /** Left empty until there is a real one to show; the page hides it. */
+  role: Localized;
+  bio: Localized[];
+  links: SocialLink[];
+}
+
+const linkedin = (url: string): SocialLink => ({
+  key: 'linkedin', label: 'LinkedIn', url, color: '#0A66C2',
+});
+const github = (url: string): SocialLink => ({
+  key: 'github', label: 'GitHub', url, color: '#181717',
+});
+
+export const team: Person[] = [
+  {
+    name: 'Kemal Yılmaz',
+    role: { en: 'Founder, game developer', tr: 'Kurucu, oyun geliştirici' },
+    bio: [
+      {
+        // TODO: bunu kendi cümlelerinle değiştir.
+        en: 'I make games and video, mostly on my own, mostly in Unity and a timeline.',
+        tr: 'Çoğunlukla tek başıma, çoğunlukla Unity’de ve bir zaman çizelgesinde oyun ve video üretiyorum.',
+      },
+    ],
+    links: [
+      { key: 'itch', label: 'itch.io', url: 'https://kemylmaz.itch.io/', color: '#FA5C5C' },
+      { key: 'artstation', label: 'ArtStation', url: 'https://www.artstation.com/kemylmaz', color: '#13AFF0' },
+      { key: 'youtube', label: 'YouTube', url: 'https://www.youtube.com/@kemlimo', color: '#FF0000' },
+      github('https://github.com/kemylmaz'),
+      linkedin('https://www.linkedin.com/in/kemal-yilmaz-6040bb225/'),
+    ],
+  },
+  {
+    name: 'Enes Yel',
+    role: { en: '', tr: '' },
+    bio: [],
+    links: [
+      linkedin('https://www.linkedin.com/in/enes-yel-44a1ab297/'),
+      github('https://github.com/enesimo16'),
+    ],
+  },
+];
+
 export const site = {
   name: 'Poppanda Interactive',
   shortName: 'Poppanda',
   domain: 'poppanda.net',
   email: 'hello@poppanda.net',
-  links: [
-    { label: 'YouTube', url: 'https://www.youtube.com/@kemlimo' },
-    { label: 'GitHub', url: 'https://github.com/kemylmaz' },
-    { label: 'LinkedIn', url: 'https://www.linkedin.com/in/kemal-yilmaz-6040bb225/' },
-  ] as { label: string; url: string }[],
+  /** Shown in the footer — the studio's own accounts. */
+  links: team[0].links,
 };

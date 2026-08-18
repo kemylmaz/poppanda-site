@@ -1,37 +1,83 @@
 ---
 import Base from '../layouts/Base.astro';
+import SocialLinks from '../components/SocialLinks.astro';
 import { useTranslations, type Lang } from '../i18n/ui';
+import { team, site } from '../data/projects';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
-// Edit these two paragraphs — they are the only place your bio lives.
-const bio = {
-  en: [
-    'I am Kemal. I make games and video, mostly on my own, mostly in Unity and a timeline.',
-    'I like work that is small enough to finish and strange enough to remember. If that sounds like something you need, the email below is the fastest way to reach me.',
-  ],
-  tr: [
-    'Ben Kemal. Çoğunlukla tek başıma, çoğunlukla Unity’de ve bir zaman çizelgesinde oyun ve video üretiyorum.',
-    'Bitirilebilecek kadar küçük, akılda kalacak kadar tuhaf işleri seviyorum. Böyle bir şeye ihtiyacın varsa aşağıdaki e-posta bana ulaşmanın en hızlı yolu.',
-  ],
-} as const;
+const [lead, ...rest] = team;
 ---
 
-<Base lang={lang} path="/about" title={t('about.title')} description={t('about.lead')} accent="#7B5EA7">
+<Base lang={lang} path="/about" title={t('about.title')} description={t('about.lead')} accent="#7A5CC4">
   <section class="section">
     <div class="wrap">
       <h1>{t('about.title')}</h1>
       <p class="lead">{t('about.lead')}</p>
 
-      <div class="prose">
-        {bio[lang].map((para) => <p>{para}</p>)}
+      <div class="me">
+        <h2>{lead.name}</h2>
+        {lead.role[lang] && <p class="role">{lead.role[lang]}</p>}
+        <div class="prose">
+          {lead.bio.map((para) => <p>{para[lang]}</p>)}
+        </div>
+        <SocialLinks links={lead.links} />
+      </div>
+
+      {rest.length > 0 && (
+        <div class="team">
+          <h2>{t('about.team')}</h2>
+          <div class="people">
+            {rest.map((person) => (
+              <article class="panel person">
+                <h3>{person.name}</h3>
+                {person.role[lang] && <p class="role">{person.role[lang]}</p>}
+                {person.bio.map((para) => <p>{para[lang]}</p>)}
+                <SocialLinks links={person.links} size="small" />
+              </article>
+            ))}
+          </div>
+        </div>
+      )}
+
+      <div class="reach">
+        <h2>{t('contact.title')}</h2>
+        <p class="muted">{t('contact.lead')}</p>
+        <a class="btn btn--primary" href={`mailto:${site.email}`}>{site.email}</a>
       </div>
     </div>
   </section>
 </Base>
 
 <style>
-  .prose { margin-top: 2.5rem; font-size: 1.1rem; }
+  .me { margin-top: 3rem; }
+  .me h2 { margin-bottom: 0.15em; }
+
+  .role {
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    margin-bottom: 1.25rem;
+  }
+
+  .prose { font-size: 1.1rem; margin-bottom: 1.75rem; }
+
+  .team { margin-top: 4rem; }
+
+  .people {
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
+    margin-top: 1.5rem;
+  }
+
+  .person h3 { margin-bottom: 0.15em; }
+  .person .role { margin-bottom: 1rem; }
+  .person p { font-size: 0.98rem; }
+
+  .reach { margin-top: 4rem; }
 </style>
