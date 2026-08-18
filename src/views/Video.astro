@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import VideoCard from '../components/VideoCard.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+import { videos } from '../data/projects';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Base lang={lang} path="/video" title={t('video.title')} description={t('video.lead')} accent="#2EC4B6">
+  <section class="section">
+    <div class="wrap">
+      <h1>{t('video.title')}</h1>
+      <p class="lead">{t('video.lead')}</p>
+
+      <div class="grid" style="margin-top: 3rem">
+        {videos.length > 0
+          ? videos.map((video) => <VideoCard video={video} lang={lang} />)
+          : <p class="muted">{t('empty')}</p>}
+      </div>
+    </div>
+  </section>
+</Base>

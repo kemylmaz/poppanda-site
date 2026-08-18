@@ -1,0 +1,126 @@
+---
+import Base from '../layouts/Base.astro';
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import type { Game } from '../data/projects';
+
+interface Props { game: Game; lang: Lang }
+const { game, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const facts = [
+  { label: t('game.status'), value: t(`status.${game.status}`) },
+  { label: t('game.year'), value: game.year },
+  { label: t('game.role'), value: game.role[lang] },
+  { label: t('game.engine'), value: game.engine },
+];
+---
+
+<Base
+  lang={lang}
+  path={`/games/${game.slug}`}
+  title={game.title}
+  description={game.tagline[lang]}
+  accent={game.accent}
+>
+  <section class="section">
+    <div class="wrap">
+      <a class="back" href={localizePath('/games', lang)}>&larr; {t('game.back')}</a>
+
+      <h1>{game.title}</h1>
+      <p class="lead">{game.tagline[lang]}</p>
+
+      {(game.playUrl || game.sourceUrl) && (
+        <div class="actions">
+          {game.playUrl && <a class="btn btn--primary" href={game.playUrl}>{t('game.play')}</a>}
+          {game.sourceUrl && <a class="btn" href={game.sourceUrl}>{t('game.source')}</a>}
+        </div>
+      )}
+
+      {game.youtube && (
+        <div class="embed hero-embed">
+          <iframe
+            src={`https://www.youtube-nocookie.com/embed/${game.youtube}`}
+            title={game.title}
+            loading="lazy"
+            allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+      )}
+
+      <div class="columns">
+        <div class="prose">
+          {game.description.map((para) => <p>{para[lang]}</p>)}
+        </div>
+
+        <aside class="panel facts">
+          <dl>
+            {facts.map((fact) => (
+              <div>
+                <dt>{fact.label}</dt>
+                <dd>{fact.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </aside>
+      </div>
+
+      {game.shots && game.shots.length > 0 && (
+        <div class="shots">
+          {game.shots.map((shot) => (
+            <img src={shot.src} alt={shot.alt[lang]} loading="lazy" />
+          ))}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .back {
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    margin-bottom: 1.75rem;
+  }
+  .back:hover { text-decoration: underline; }
+
+  .actions { display: flex; flex-wrap: wrap; gap: 0.85rem; margin: 2rem 0; }
+  .hero-embed { margin: 2.5rem 0; }
+
+  .columns {
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    align-items: start;
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 48rem) {
+    .columns { grid-template-columns: 1fr; }
+  }
+
+  .prose { font-size: 1.1rem; }
+
+  .facts dl { margin: 0; display: grid; gap: 1rem; }
+  .facts dt {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .facts dd { margin: 0.15rem 0 0; font-weight: 600; }
+
+  .shots {
+    margin-top: 3rem;
+    display: grid;
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 24rem), 1fr));
+  }
+  .shots img {
+    border: 2px solid var(--ink);
+    border-radius: var(--radius);
+    box-shadow: 5px 5px 0 var(--ink);
+  }
+</style>

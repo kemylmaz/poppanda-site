@@ -1,0 +1,25 @@
+---
+import Base from '../layouts/Base.astro';
+import GameCard from '../components/GameCard.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+import { games } from '../data/projects';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<Base lang={lang} path="/games" title={t('games.title')} description={t('games.lead')}>
+  <section class="section">
+    <div class="wrap">
+      <h1>{t('games.title')}</h1>
+      <p class="lead">{t('games.lead')}</p>
+
+      <div class="grid" style="margin-top: 3rem">
+        {games.length > 0
+          ? games.map((game) => <GameCard game={game} lang={lang} />)
+          : <p class="muted">{t('empty')}</p>}
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,94 @@
+---
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import { site } from '../data/projects';
+
+interface Props { lang: Lang; path: string }
+const { lang, path } = Astro.props;
+const t = useTranslations(lang);
+
+const nav = [
+  { href: '/games', label: t('nav.games') },
+  { href: '/video', label: t('nav.video') },
+  { href: '/about', label: t('nav.about') },
+];
+
+const other: Lang = lang === 'en' ? 'tr' : 'en';
+---
+
+<header class="site-head">
+  <div class="wrap bar">
+    <a class="brand" href={localizePath('/', lang)}>
+      <span class="dot" aria-hidden="true"></span>{site.name}
+    </a>
+
+    <nav aria-label={t('nav.games')}>
+      {nav.map((item) => (
+        <a
+          href={localizePath(item.href, lang)}
+          aria-current={path.startsWith(item.href) ? 'page' : undefined}
+        >{item.label}</a>
+      ))}
+      <a class="lang" href={localizePath(path, other)} hreflang={other} lang={other}>
+        {other.toUpperCase()}
+      </a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .site-head {
+    border-bottom: 2px solid var(--ink);
+    background: color-mix(in srgb, var(--cream) 88%, transparent);
+    backdrop-filter: blur(8px);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  .bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-block: 0.9rem;
+  }
+
+  .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 700;
+    font-size: 1.25rem;
+    letter-spacing: -0.02em;
+    text-decoration: none;
+  }
+
+  .dot {
+    width: 0.85rem;
+    height: 0.85rem;
+    border-radius: 50%;
+    border: 2px solid var(--ink);
+    background: var(--coral);
+  }
+
+  nav {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    font-weight: 600;
+  }
+
+  nav a { text-decoration: none; }
+  nav a:hover { text-decoration: underline; text-decoration-color: var(--accent); }
+  nav a[aria-current='page'] { text-decoration: underline; text-decoration-color: var(--coral); }
+
+  .lang {
+    font-size: 0.85rem;
+    letter-spacing: 0.08em;
+    padding: 0.25em 0.7em;
+    border: 2px solid var(--ink);
+    border-radius: 999px;
+    background: var(--card);
+  }
+</style>

@@ -1,0 +1,28 @@
+---
+import type { Lang } from '../i18n/ui';
+import type { Video } from '../data/projects';
+
+interface Props { video: Video; lang: Lang }
+const { video, lang } = Astro.props;
+---
+
+<article class="v" style={`--card-accent:${video.accent}`}>
+  <div class="embed">
+    <iframe
+      src={`https://www.youtube-nocookie.com/embed/${video.youtube}`}
+      title={video.title[lang]}
+      loading="lazy"
+      allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+      allowfullscreen
+    ></iframe>
+  </div>
+
+  <h3>{video.title[lang]}</h3>
+  <p class="muted meta">{video.role[lang]} · {video.year}</p>
+  <p>{video.description[lang]}</p>
+</article>
+
+<style>
+  .v h3 { margin-top: 1.1rem; margin-bottom: 0.15rem; }
+  .meta { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.6rem; }
+</style>

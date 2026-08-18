@@ -1,0 +1,37 @@
+---
+import Base from '../layouts/Base.astro';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Edit these two paragraphs — they are the only place your bio lives.
+const bio = {
+  en: [
+    'I am Kemal. I make games and video, mostly on my own, mostly in Unity and a timeline.',
+    'I like work that is small enough to finish and strange enough to remember. If that sounds like something you need, the email below is the fastest way to reach me.',
+  ],
+  tr: [
+    'Ben Kemal. Çoğunlukla tek başıma, çoğunlukla Unity’de ve bir zaman çizelgesinde oyun ve video üretiyorum.',
+    'Bitirilebilecek kadar küçük, akılda kalacak kadar tuhaf işleri seviyorum. Böyle bir şeye ihtiyacın varsa aşağıdaki e-posta bana ulaşmanın en hızlı yolu.',
+  ],
+} as const;
+---
+
+<Base lang={lang} path="/about" title={t('about.title')} description={t('about.lead')} accent="#7B5EA7">
+  <section class="section">
+    <div class="wrap">
+      <h1>{t('about.title')}</h1>
+      <p class="lead">{t('about.lead')}</p>
+
+      <div class="prose">
+        {bio[lang].map((para) => <p>{para}</p>)}
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .prose { margin-top: 2.5rem; font-size: 1.1rem; }
+</style>

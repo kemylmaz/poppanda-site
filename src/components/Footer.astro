@@ -1,0 +1,53 @@
+---
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import { site } from '../data/projects';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="site-foot">
+  <div class="wrap inner">
+    <div>
+      <h2 class="ct">{t('contact.title')}</h2>
+      <p class="muted">{t('contact.lead')}</p>
+      <a class="btn btn--primary" href={`mailto:${site.email}`}>{site.email}</a>
+    </div>
+
+    <div class="meta">
+      {site.links.length > 0 && (
+        <ul>
+          {site.links.map((l) => (
+            <li><a href={l.url} rel="me noopener" target="_blank">{l.label}</a></li>
+          ))}
+        </ul>
+      )}
+      <p class="small muted">© {year} {site.name}. {t('footer.rights')}</p>
+      <p class="small muted"><a href={localizePath('/about', lang)}>{t('nav.about')}</a></p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-foot {
+    border-top: 2px solid var(--ink);
+    margin-top: clamp(3rem, 2rem + 5vw, 6rem);
+    padding-block: clamp(2.5rem, 2rem + 3vw, 4rem);
+    background: var(--card);
+  }
+
+  .inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2.5rem;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+
+  .ct { margin-bottom: 0.2em; }
+
+  .meta ul { list-style: none; padding: 0; margin: 0 0 1rem; display: flex; gap: 1rem; font-weight: 600; }
+  .small { font-size: 0.9rem; margin: 0 0 0.35rem; }
+</style>

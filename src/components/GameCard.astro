@@ -1,0 +1,71 @@
+---
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import type { Game } from '../data/projects';
+
+interface Props { game: Game; lang: Lang }
+const { game, lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<a class="card" href={localizePath(`/games/${game.slug}`, lang)} style={`--card-accent:${game.accent}`}>
+  <div class="thumb">
+    {game.cover
+      ? <img src={game.cover} alt="" loading="lazy" />
+      : <span class="initial" aria-hidden="true">{game.title.charAt(0)}</span>}
+  </div>
+
+  <div class="body">
+    <h3>{game.title}</h3>
+    <p class="muted">{game.tagline[lang]}</p>
+    <div class="row">
+      <span class="tag" style="background: var(--card-accent); color: #fff">
+        {t(`status.${game.status}`)}
+      </span>
+      <span class="muted year">{game.year}</span>
+    </div>
+  </div>
+</a>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    background: var(--card);
+    border: 2px solid var(--ink);
+    border-radius: var(--radius);
+    box-shadow: 5px 5px 0 var(--ink);
+    overflow: hidden;
+    transition: transform 140ms ease, box-shadow 140ms ease;
+  }
+
+  .card:hover {
+    transform: translate(-3px, -3px);
+    box-shadow: 9px 9px 0 var(--card-accent);
+  }
+
+  .thumb {
+    aspect-ratio: 16 / 10;
+    border-bottom: 2px solid var(--ink);
+    background: var(--card-accent);
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+  }
+
+  .thumb img { width: 100%; height: 100%; object-fit: cover; }
+
+  .initial {
+    font-size: 5rem;
+    font-weight: 700;
+    color: #fff;
+    opacity: 0.55;
+  }
+
+  .body { padding: 1.25rem 1.4rem 1.4rem; }
+  .body h3 { margin-bottom: 0.3rem; }
+  .body p { margin-bottom: 1rem; font-size: 0.98rem; }
+
+  .row { display: flex; align-items: center; gap: 0.75rem; }
+  .year { font-size: 0.9rem; font-weight: 600; }
+</style>
