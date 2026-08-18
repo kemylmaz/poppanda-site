@@ -1,0 +1,51 @@
+---
+import { existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { site } from '../data/projects';
+
+/**
+ * Uses public/media/logo.png (the horizontal lockup) as soon as that file
+ * exists. Until then it falls back to a typeset wordmark, so the site never
+ * shows a broken image.
+ */
+const logoPath = '/media/logo.png';
+const onDisk = fileURLToPath(new URL(`../../public${logoPath}`, import.meta.url));
+const hasLogo = existsSync(onDisk);
+---
+
+{hasLogo
+  ? <img class="logo" src={logoPath} alt={site.name} width="220" height="52" />
+  : (
+    <span class="fallback">
+      <span class="dot" aria-hidden="true"></span>
+      <span class="word">{site.shortName}</span>
+    </span>
+  )}
+
+<style>
+  .logo {
+    height: 2.4rem;
+    width: auto;
+  }
+
+  .fallback {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    font-size: 1.3rem;
+  }
+
+  .dot {
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 50%;
+    border: 3px solid var(--navy);
+    background: var(--yellow);
+  }
+
+  .word {
+    text-transform: uppercase;
+    font-weight: 800;
+    letter-spacing: 0.01em;
+  }
+</style>

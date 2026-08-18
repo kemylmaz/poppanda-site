@@ -1,6 +1,7 @@
 ---
 import { useTranslations, localizePath, type Lang } from '../i18n/ui';
 import { site } from '../data/projects';
+import Brand from './Brand.astro';
 
 interface Props { lang: Lang; path: string }
 const { lang, path } = Astro.props;
@@ -18,8 +19,7 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
 <header class="site-head">
   <div class="wrap bar">
     <a class="brand" href={localizePath('/', lang)}>
-      <span class="dot" aria-hidden="true"></span>
-      <span class="word">{site.shortName}</span>
+      <Brand />
     </a>
 
     <nav aria-label={t('nav.games')}>
@@ -63,19 +63,7 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
     text-decoration: none;
   }
 
-  .dot {
-    width: 0.9rem;
-    height: 0.9rem;
-    border-radius: 50%;
-    border: 3px solid var(--navy);
-    background: var(--yellow);
-  }
 
-  .word {
-    text-transform: uppercase;
-    font-weight: 800;
-    letter-spacing: 0.01em;
-  }
 
   nav {
     display: flex;
