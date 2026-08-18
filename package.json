@@ -9,7 +9,8 @@
     "preview": "astro preview",
     "og": "node scripts/make-og.mjs",
     "logos": "node scripts/make-logos.mjs",
-    "social": "node scripts/make-social.mjs"
+    "social": "node scripts/make-social.mjs",
+    "cursor": "node scripts/make-cursor.mjs"
   },
   "devDependencies": {
     "wrangler": "^4.42.0"
