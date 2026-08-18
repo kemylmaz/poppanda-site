@@ -1,0 +1,92 @@
+---
+import Base from '../layouts/Base.astro';
+import { useTranslations, localizePath, type Lang } from '../i18n/ui';
+import { postsFor, slugOf, formatDate } from '../lib/blog';
+import { site } from '../data/projects';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const posts = await postsFor(lang);
+const channel = site.links.find((link) => link.key === 'youtube');
+---
+
+<Base lang={lang} path="/blog" title={t('blog.title')} description={t('blog.lead')} accent="#7A5CC4">
+  <section class="section">
+    <div class="wrap">
+      <header class="intro">
+        <span class="kicker">{t('blog.kicker')}</span>
+        <h1>{t('blog.title')}</h1>
+        <p class="lead">{t('blog.lead')}</p>
+      </header>
+
+      {posts.length > 0 ? (
+        <ul class="posts">
+          {posts.map((post, i) => (
+            <li data-reveal style={`--reveal-delay:${i * 60}ms`}>
+              <a href={localizePath(`/blog/${slugOf(post)}`, lang)}>
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time>
+                <h2>{post.data.title}</h2>
+                {post.data.summary && <p class="muted">{post.data.summary}</p>}
+                {post.data.youtube && <span class="tag">{t('blog.video')}</span>}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <div class="empty panel">
+          <h2>{t('empty.title')}</h2>
+          <p class="muted">{t('empty')}</p>
+          {channel && (
+            <a class="btn btn--primary" href={channel.url} target="_blank" rel="noopener">
+              {t('empty.channel')}
+            </a>
+          )}
+        </div>
+      )}
+    </div>
+  </section>
+</Base>
+
+<style>
+  .intro { margin-bottom: var(--space-6); }
+
+  .posts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 3px solid var(--line);
+  }
+
+  .posts li { border-bottom: 3px solid var(--line); }
+
+  .posts a {
+    display: block;
+    padding: var(--space-4) var(--space-3);
+    text-decoration: none;
+    transition: background var(--fast) var(--ease-out);
+  }
+
+  .posts a:hover,
+  .posts a:focus-visible { background: var(--bg-alt); }
+
+  time {
+    font-family: var(--font-display);
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .posts h2 {
+    font-size: var(--step-2);
+    margin: 0.25rem 0 0.35rem;
+  }
+
+  .posts p { margin-bottom: 0.6rem; }
+
+  .empty { max-width: 40rem; }
+  .empty h2 { font-size: var(--step-2); }
+</style>

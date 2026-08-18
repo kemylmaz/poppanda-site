@@ -20,8 +20,10 @@ Neredeyse her şey tek bir dosyada: `src/data/projects.ts`.
 `/games/<slug>` ve `/tr/games/<slug>` sayfalarını üretir. `featured: true`
 dersen ana sayfada da görünür.
 
-**Yeni video:** `videos` dizisine ekle. `youtube` alanına video kimliğini yaz
-(`youtube.com/watch?v=` sonrası gelen kısım).
+**Yeni blog yazısı:** `src/content/blog/` altına `yazi-adi.tr.md` ve `yazi-adi.en.md`
+oluştur. `sablon.tr.md` dosyasını kopyalaman en kolayı — içindeki `draft` satırını
+`false` yaptığın an yayına girer. Video paylaşacaksan `youtube` alanına videonun
+kimliğini yaz (`youtube.com/watch?v=` sonrası gelen kısım).
 
 **Görseller:** `public/media/` altına koy, veriye `/media/dosya.png` diye
 referans ver.

@@ -3,16 +3,16 @@ import Base from '../layouts/Base.astro';
 import { Image } from 'astro:assets';
 import mark from '../assets/mark.png';
 import GameRow from '../components/GameRow.astro';
-import VideoCard from '../components/VideoCard.astro';
 import { useTranslations, localizePath, type Lang } from '../i18n/ui';
-import { games, videos, team } from '../data/projects';
+import { games, team } from '../data/projects';
+import { postsFor, slugOf, formatDate } from '../lib/blog';
 
 interface Props { lang: Lang }
 const { lang } = Astro.props;
 const t = useTranslations(lang);
 
 const playable = games.filter((g) => g.playable);
-const featuredVideos = videos.filter((v) => v.featured).slice(0, 2);
+const latestPosts = (await postsFor(lang)).slice(0, 3);
 
 const stats = [
   { value: String(games.length), label: t('stat.games') },
@@ -67,24 +67,29 @@ const stats = [
     </section>
   )}
 
-  {featuredVideos.length > 0 && (
+  {latestPosts.length > 0 && (
     <section class="section band">
       <div class="wrap">
         <header class="head" data-reveal>
-          <h2>{t('video.title')}</h2>
-          <a class="more" href={localizePath('/video', lang)}>{t('home.all')}</a>
+          <h2>{t('blog.title')}</h2>
+          <a class="more" href={localizePath('/blog', lang)}>{t('blog.back')}</a>
         </header>
 
-        <div class="videos">
-          {featuredVideos.map((video, i) => (
-            <div data-reveal style={`--reveal-delay:${i * 80}ms`}>
-              <VideoCard video={video} lang={lang} />
-            </div>
+        <ul class="posts">
+          {latestPosts.map((post, i) => (
+            <li data-reveal style={`--reveal-delay:${i * 60}ms`}>
+              <a href={localizePath(`/blog/${slugOf(post)}`, lang)}>
+                <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date, lang)}</time>
+                <h3>{post.data.title}</h3>
+                {post.data.summary && <p class="muted">{post.data.summary}</p>}
+              </a>
+            </li>
           ))}
-        </div>
+        </ul>
       </div>
     </section>
   )}
+
 </Base>
 
 <style>
@@ -168,11 +173,29 @@ const stats = [
 
   .rows { border-bottom: 3px solid var(--line); }
 
-  .videos {
-    display: grid;
-    gap: var(--space-4);
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  .posts { list-style: none; margin: 0; padding: 0; border-top: 3px solid var(--line); }
+  .posts li { border-bottom: 3px solid var(--line); }
+
+  .posts a {
+    display: block;
+    padding: var(--space-3);
+    text-decoration: none;
+    transition: background var(--fast) var(--ease-out);
   }
+
+  .posts a:hover, .posts a:focus-visible { background: var(--surface); }
+
+  .posts time {
+    font-family: var(--font-display);
+    font-size: var(--step--1);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  .posts h3 { margin: 0.2rem 0 0.3rem; }
+  .posts p { margin: 0; }
 
   @media (max-width: 56rem) {
     .hero__inner { grid-template-columns: 1fr; }
