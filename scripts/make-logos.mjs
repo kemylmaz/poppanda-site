@@ -16,15 +16,14 @@ for (const job of jobs) {
   console.log(`${job.out}  ${info.width}x${info.height}`);
 }
 
-// The panda is shown small but on high-density screens, so it is enlarged well
-// past its source size with a smooth kernel and then sharpened — otherwise the
-// JPEG softness is what you see.
-const mark = await sharp('public/media/mark-source.jpg')
-  .trim({ threshold: 18 })
-  .resize({ height: 900, kernel: "lanczos3" })
-  .median(3)
-  .sharpen({ sigma: 1.4, m1: 0.5, m2: 2.5 })
-  .png({ compressionLevel: 9, palette: true, colours: 24 })
+// The panda arrives with its background already cut out. Trimming works on the
+// alpha channel here, so the empty margin goes without touching the artwork,
+// and the result is enlarged past source size for high-density screens.
+const mark = await sharp('public/media/mark-source.png')
+  .trim({ threshold: 2 })
+  .resize({ height: 1000, kernel: 'lanczos3' })
+  .sharpen({ sigma: 1, m1: 0.4, m2: 2 })
+  .png({ compressionLevel: 9, palette: true, colours: 64, quality: 92 })
   .toFile('public/media/mark.png');
 
 console.log(`public/media/mark.png  ${mark.width}x${mark.height}`);

@@ -15,11 +15,11 @@ await sharp({ create: { width: 1200, height: 630, channels: 4, background: YELLO
   .toFile('public/og.png');
 console.log('wrote public/og.png');
 
-// Square icons from the panda mark.
+// Square icons: the cut-out panda dropped onto a brand-yellow tile.
 for (const size of [180, 512]) {
-  const mark = await sharp('public/media/mark-source.jpg')
-    .trim({ threshold: 18 })
-    .resize({ height: Math.round(size * 0.82), withoutEnlargement: true })
+  const mark = await sharp('public/media/mark-source.png')
+    .trim({ threshold: 2 })
+    .resize({ height: Math.round(size * 0.88) })
     .toBuffer();
 
   await sharp({ create: { width: size, height: size, channels: 4, background: YELLOW } })
