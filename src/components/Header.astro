@@ -35,13 +35,15 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
 
       <a
         class="lang"
+        data-lang={lang}
         href={localizePath(path, other)}
         hreflang={other}
         lang={other}
         aria-label={other === 'tr' ? 'Türkçe' : 'English'}
       >
-        <span class="lang__on">{lang.toUpperCase()}</span>
-        <span class="lang__off">{other.toUpperCase()}</span>
+        <span class="lang__knob" aria-hidden="true"></span>
+        <span class:list={['lang__opt', lang === 'en' && 'is-on']}>EN</span>
+        <span class:list={['lang__opt', lang === 'tr' && 'is-on']}>TR</span>
       </a>
 
       <a class="contact" href="#contact">{t('nav.contact')}</a>
@@ -119,30 +121,52 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
   nav ul a:focus-visible::after,
   nav ul a[aria-current='page']::after { transform: scaleX(1); }
 
-  /* The language switch reads as a physical toggle: the live one sits on a
-     navy chip, the other waits beside it. */
+  /* A physical switch: both languages are always on the track and a navy knob
+     sits over the live one. Changing language slides the knob across rather
+     than repainting the chip. */
   .lang {
-    gap: 0.35rem;
-    padding: 0.2rem 0.35rem 0.2rem 0.2rem;
+    position: relative;
+    padding: 0.2rem;
     border: 3px solid var(--navy-deep);
     border-radius: 999px;
     background: rgba(255, 255, 255, 0.55);
     font-size: var(--step--1);
     letter-spacing: 0.06em;
+    overflow: hidden;
   }
 
-  .lang__on {
-    display: inline-grid;
-    place-items: center;
-    min-width: 2.1rem;
-    padding: 0.15rem 0.35rem;
+  .lang__knob {
+    position: absolute;
+    top: 0.2rem;
+    bottom: 0.2rem;
+    left: 0.2rem;
+    width: calc(50% - 0.2rem);
     border-radius: 999px;
     background: var(--navy-deep);
-    color: var(--yellow);
+    transition: transform var(--mid) var(--ease-out);
+    view-transition-name: lang-knob;
   }
 
-  .lang__off { padding-right: 0.25rem; opacity: 0.7; }
-  .lang:hover .lang__off { opacity: 1; }
+  .lang[data-lang='tr'] .lang__knob { transform: translateX(100%); }
+
+  .lang__opt {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    min-width: 2.2rem;
+    padding: 0.15rem 0.4rem;
+    color: var(--navy-deep);
+    opacity: 0.65;
+    transition: color var(--mid) var(--ease-out), opacity var(--mid) var(--ease-out);
+  }
+
+  .lang__opt.is-on { color: var(--yellow); opacity: 1; }
+
+  /* The knob leans toward the language you are about to pick. */
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .lang:hover .lang__knob { transform: translateX(18%); }
+    .lang[data-lang='tr']:hover .lang__knob { transform: translateX(82%); }
+  }
 
   /* The only filled control in the bar, parked in the corner: it is the one
      thing the header is asking you to do. */

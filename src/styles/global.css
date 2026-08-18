@@ -247,6 +247,32 @@ img { max-width: 100%; height: auto; display: block; }
 }
 .embed iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
+/* ---- page transitions -------------------------------------------------- */
+
+/* Cross-document view transitions: the browser crossfades between pages on its
+   own, no script involved. Browsers without support just navigate as before. */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition { navigation: auto; }
+
+  ::view-transition-old(root) {
+    animation: fade-out 140ms var(--ease-out) both;
+  }
+
+  ::view-transition-new(root) {
+    animation: fade-in 220ms var(--ease-out) both;
+  }
+
+  /* The language knob is the one element that keeps its identity across the
+     navigation, so it slides from the old side to the new one. */
+  ::view-transition-group(lang-knob) {
+    animation-duration: 320ms;
+    animation-timing-function: var(--ease-out);
+  }
+}
+
+@keyframes fade-out { to { opacity: 0; } }
+@keyframes fade-in { from { opacity: 0; } }
+
 /* ---- scroll reveal ----------------------------------------------------- */
 
 [data-reveal] {
