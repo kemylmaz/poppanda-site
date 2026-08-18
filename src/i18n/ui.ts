@@ -10,7 +10,7 @@ export const ui = {
     'nav.games': 'Games',
     'nav.video': 'Video',
     'nav.about': 'About',
-    'nav.contact': 'Contact',
+    'nav.contact': 'Contact us',
 
     'home.kicker': 'Poppanda Interactive',
     'home.title': 'Indie game studio based in Türkiye',

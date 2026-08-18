@@ -43,6 +43,8 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
         <span class="lang__on">{lang.toUpperCase()}</span>
         <span class="lang__off">{other.toUpperCase()}</span>
       </a>
+
+      <a class="contact" href="#contact">{t('nav.contact')}</a>
     </nav>
   </div>
 
@@ -141,6 +143,24 @@ const other: Lang = lang === 'en' ? 'tr' : 'en';
 
   .lang__off { padding-right: 0.25rem; opacity: 0.7; }
   .lang:hover .lang__off { opacity: 1; }
+
+  /* The only filled control in the bar, parked in the corner: it is the one
+     thing the header is asking you to do. */
+  .contact {
+    padding: 0.35rem 1.1rem;
+    border: 3px solid var(--navy-deep);
+    border-radius: 999px;
+    background: var(--orange);
+    color: #fff;
+    font-size: var(--step--1);
+    letter-spacing: 0.04em;
+    box-shadow: 3px 3px 0 var(--navy-deep);
+    transition: transform var(--fast) var(--ease-out), box-shadow var(--fast) var(--ease-out);
+  }
+
+  .contact:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 var(--navy-deep); }
+  .contact:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--navy-deep); }
+  .contact::after { display: none; }
 
   @media (max-width: 46rem) {
     .bar { justify-content: center; gap: var(--space-2); padding-block: 0.6rem; }
