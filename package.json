@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "og": "node scripts/make-og.mjs"
+    "og": "node scripts/make-og.mjs",
+    "logos": "node scripts/make-logos.mjs"
   },
   "dependencies": {
     "@fontsource-variable/outfit": "^5.1.0",

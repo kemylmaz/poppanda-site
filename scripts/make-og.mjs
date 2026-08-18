@@ -1,29 +1,31 @@
-// Renders public/og.png — the image shown when a poppanda.net link is shared.
+// Renders the share image and the favicons from the real logo art.
 // Run with: npm run og
 import sharp from 'sharp';
-import { writeFileSync } from 'node:fs';
 
-const NAVY = '#2B2170';
-const YELLOW = '#F7C51E';
-const ORANGE = '#F26722';
+const YELLOW = { r: 247, g: 197, b: 30, alpha: 1 };
 
-const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
-  <rect width="1200" height="630" fill="${YELLOW}"/>
-  <g transform="translate(150 175) scale(2.9)">
-    <circle cx="19" cy="20" r="8.5" fill="${NAVY}"/>
-    <circle cx="45" cy="20" r="8.5" fill="${NAVY}"/>
-    <circle cx="32" cy="34" r="19" fill="${NAVY}"/>
-    <path d="M23 30.5c1.6-2.6 5.2-2.6 6.8 0-1.6 2.6-5.2 2.6-6.8 0z" fill="${YELLOW}"/>
-    <path d="M34.2 30.5c1.6-2.6 5.2-2.6 6.8 0-1.6 2.6-5.2 2.6-6.8 0z" fill="${YELLOW}"/>
-    <path d="M28 41c2.4 2.2 5.6 2.2 8 0" stroke="${YELLOW}" stroke-width="2.6" stroke-linecap="round" fill="none"/>
-    <path d="M26 55c2-6 4-9 6-9s4 3 6 9c-4 2-8 2-12 0z" fill="${ORANGE}"/>
-  </g>
-  <text x="460" y="290" font-family="Arial Black, Arial, sans-serif" font-size="86" font-weight="900" fill="${NAVY}" letter-spacing="-2">POPPANDA</text>
-  <text x="464" y="378" font-family="Arial Black, Arial, sans-serif" font-size="62" font-weight="900" fill="${NAVY}" letter-spacing="-1">INTERACTIVE</text>
-  <text x="466" y="440" font-family="Arial, sans-serif" font-size="30" fill="${NAVY}" opacity="0.75">Games &amp; video · poppanda.net</text>
-  <rect x="0" y="606" width="1200" height="24" fill="${ORANGE}"/>
-</svg>`;
+// 1200x630 share card: the stacked lockup centred on brand yellow.
+const lockup = await sharp('public/media/logo-stacked.png')
+  .resize({ height: 470, withoutEnlargement: true })
+  .toBuffer();
 
-writeFileSync('public/og.svg', svg);
-await sharp(Buffer.from(svg)).png().toFile('public/og.png');
+await sharp({ create: { width: 1200, height: 630, channels: 4, background: YELLOW } })
+  .composite([{ input: lockup, gravity: 'center' }])
+  .png()
+  .toFile('public/og.png');
 console.log('wrote public/og.png');
+
+// Square icons from the panda mark.
+for (const size of [180, 512]) {
+  const mark = await sharp('public/media/mark-source.jpg')
+    .trim({ threshold: 18 })
+    .resize({ height: Math.round(size * 0.82), withoutEnlargement: true })
+    .toBuffer();
+
+  await sharp({ create: { width: size, height: size, channels: 4, background: YELLOW } })
+    .composite([{ input: mark, gravity: 'center' }])
+    .png()
+    .toFile(size === 180 ? 'public/apple-touch-icon.png' : 'public/icon-512.png');
+}
+await sharp('public/icon-512.png').resize(48, 48).png().toFile('public/favicon.png');
+console.log('wrote icons');

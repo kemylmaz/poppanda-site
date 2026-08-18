@@ -30,7 +30,8 @@ const canonical = new URL(localizePath(path, lang), Astro.site);
     <link rel="canonical" href={canonical} />
     <link rel="alternate" hreflang="en" href={new URL(localizePath(path, 'en'), Astro.site)} />
     <link rel="alternate" hreflang="tr" href={new URL(localizePath(path, 'tr'), Astro.site)} />
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.png" type="image/png" sizes="48x48" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
