@@ -10,6 +10,9 @@
     "og": "node scripts/make-og.mjs",
     "logos": "node scripts/make-logos.mjs"
   },
+  "devDependencies": {
+    "wrangler": "^4.42.0"
+  },
   "dependencies": {
     "@fontsource-variable/outfit": "^5.1.0",
     "@astrojs/sitemap": "^3.2.1",

@@ -1,0 +1,10 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "poppanda-site",
+  "compatibility_date": "2026-08-18",
+  // Astro writes the finished site here; Cloudflare serves it as static files.
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}
