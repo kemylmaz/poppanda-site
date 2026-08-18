@@ -106,21 +106,27 @@ img { max-width: 100%; height: auto; display: block; }
 
 ::selection { background: var(--yellow); color: var(--navy-deep); }
 
-/* The paw replaces the pointing hand on anything clickable — the gesture the
-   artwork already makes. It is scoped to real pointing devices so it never
-   loads on a touch screen, and every rule keeps a system fallback in case the
-   image is blocked or the browser refuses the size. */
+/* The paw carries the whole page, not just the clickable parts. It is scoped to
+   real pointing devices so it never loads on a touch screen, and every rule
+   keeps a system fallback in case the image is blocked or the browser refuses
+   the size. Text still gets the I-beam: that one carries meaning the paw
+   cannot. */
 @media (pointer: fine) {
+  body { cursor: url('../assets/cursor.png') 8 0, auto; }
+
   a,
   button,
   summary,
   label,
   [role='button'],
   [role='link'] {
-    cursor: url('../assets/cursor.png') 13 0, pointer;
+    cursor: url('../assets/cursor.png') 8 0, pointer;
   }
 
-  a:has(input),
+  input,
+  textarea,
+  [contenteditable='true'] { cursor: text; }
+
   button:disabled,
   [aria-disabled='true'] { cursor: not-allowed; }
 }

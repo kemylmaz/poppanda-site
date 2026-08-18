@@ -5,7 +5,7 @@ import sharp from 'sharp';
 
 const SOURCE = 'assets/pandahand.png';
 const OUT = 'src/assets/cursor.png';
-const HEIGHT = 56; // bigger than this and the paw covers what it points at
+const HEIGHT = 38; // bigger than this and the paw covers what it points at
 
 // The artwork is painted with soft alpha all the way through, so parts of the
 // paw are see-through. A cursor has to sit on top of whatever it points at, so
