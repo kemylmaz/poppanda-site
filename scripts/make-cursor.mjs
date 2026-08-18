@@ -5,7 +5,7 @@ import sharp from 'sharp';
 
 const SOURCE = 'assets/pandahand.png';
 const OUT = 'src/assets/cursor.png';
-const HEIGHT = 34; // bigger than this and the paw covers what it points at
+const HEIGHT = 38; // bigger than this and the paw covers what it points at
 
 // The artwork is painted with soft alpha all the way through, so parts of the
 // paw are see-through. A cursor has to sit on top of whatever it points at, so
@@ -60,39 +60,7 @@ for (let y = 0; y < height; y++) {
   }
 }
 
-// A thin brand-navy rim around the silhouette. On the pale page it separates
-// the paw's white fur from the background; on the navy footer the fur does that
-// job by itself, so the rim can disappear there without costing anything.
-const OUTLINE = 2;
-const OUTLINE_RGB = [43, 33, 112];
-
-const rimW = width + OUTLINE * 2;
-const rimH = height + OUTLINE * 2;
-const rim = Buffer.alloc(rimW * rimH * 4);
-
-for (let y = 0; y < height; y++) {
-  for (let x = 0; x < width; x++) {
-    if (data[(y * width + x) * channels + 3] < 40) continue;
-
-    for (let dy = -OUTLINE; dy <= OUTLINE; dy++) {
-      for (let dx = -OUTLINE; dx <= OUTLINE; dx++) {
-        if (dx * dx + dy * dy > OUTLINE * OUTLINE) continue;
-        const rx = x + dx + OUTLINE;
-        const ry = y + dy + OUTLINE;
-        const i = (ry * rimW + rx) * 4;
-        rim[i] = OUTLINE_RGB[0];
-        rim[i + 1] = OUTLINE_RGB[1];
-        rim[i + 2] = OUTLINE_RGB[2];
-        rim[i + 3] = 255;
-      }
-    }
-  }
-}
-
-const paw = await sharp(data, { raw: { width, height, channels } }).png().toBuffer();
-
-const small = await sharp(rim, { raw: { width: rimW, height: rimH, channels: 4 } })
-  .composite([{ input: paw, left: OUTLINE, top: OUTLINE }])
+const small = await sharp(data, { raw: { width, height, channels } })
   .png({ compressionLevel: 9 })
   .toBuffer({ resolveWithObject: true });
 
