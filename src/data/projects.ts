@@ -80,6 +80,8 @@ export const games: Game[] = [
   {
     slug: 'minibus-tycoon',
     playable: true,
+    // game.poppanda.net baglaninca burasi o adresle degisir.
+    playUrl: 'https://all-aboard.kem-115.workers.dev',
     title: 'Minibüs Tycoon — All Aboard!',
     tagline: {
       en: 'Drive the route yourself, then hire someone who drives it better.',
