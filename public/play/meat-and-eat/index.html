@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes"
+    />
+    <title>Meat &amp; Eat — Poppanda Interactive</title>
+    <meta name="description" content="Run a shawarma counter. Play in your browser." />
+    <link rel="icon" href="/favicon.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Outfit:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #2b2170;
+        --navy-deep: #1a1350;
+        --orange: #f26722;
+        --yellow: #f7c51e;
+        --bg: #f7f5f0;
+        --on-accent: #ffffff;
+        --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+        --font-body: 'Outfit', ui-sans-serif, system-ui, sans-serif;
+        --bar: 56px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        height: 100%;
+        overflow: hidden;
+        background: var(--navy-deep);
+        color: var(--bg);
+        font-family: var(--font-body);
+      }
+
+      /* Aynı panda pençesi, sitenin geri kalanındaki gibi. Tuval Unity'nin
+         kendi imlecini kullanır, bu yüzden kural yalnız sayfa çerçevesinde. */
+      @media (pointer: fine) {
+        body {
+          cursor: url('/play/cursor.png') 8 0, auto;
+        }
+        a,
+        button {
+          cursor: url('/play/cursor.png') 8 0, pointer;
+        }
+      }
+
+      #bar {
+        position: fixed;
+        inset: 0 0 auto 0;
+        height: var(--bar);
+        z-index: 3;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem;
+        background: var(--navy);
+        border-bottom: 2px solid rgba(255, 255, 255, 0.12);
+      }
+
+      #bar a.home,
+      #bar button {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        height: 36px;
+        padding: 0 0.9rem;
+        border: 0;
+        border-radius: 999px;
+        font: 600 0.9rem/1 var(--font-body);
+        color: var(--navy-deep);
+        background: var(--bg);
+        text-decoration: none;
+        transition: transform 160ms cubic-bezier(0.22, 1, 0.36, 1), background 160ms;
+      }
+
+      #bar a.home:hover,
+      #bar button:hover {
+        background: var(--yellow);
+        transform: translateY(-1px);
+      }
+
+      #bar a.home:focus-visible,
+      #bar button:focus-visible {
+        outline: 3px solid var(--yellow);
+        outline-offset: 2px;
+      }
+
+      #title {
+        margin: 0 auto 0 0;
+        font: 800 1.05rem/1 var(--font-display);
+        letter-spacing: -0.01em;
+        color: var(--bg);
+      }
+
+      #title span {
+        display: block;
+        margin-top: 0.25rem;
+        font: 600 0.66rem/1 var(--font-body);
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--yellow);
+      }
+
+      #stage {
+        position: fixed;
+        inset: var(--bar) 0 0 0;
+        display: grid;
+        place-items: center;
+        background: var(--navy-deep);
+      }
+
+      #unity-canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        background: var(--navy-deep);
+      }
+
+      #loader {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        display: grid;
+        place-content: center;
+        justify-items: center;
+        gap: 1.25rem;
+        padding: 2rem;
+        text-align: center;
+        background: var(--navy-deep);
+      }
+
+      #loader h1 {
+        margin: 0;
+        font: 800 clamp(2rem, 1.2rem + 4vw, 3.6rem) / 1 var(--font-display);
+        letter-spacing: -0.02em;
+      }
+
+      #loader p {
+        margin: 0;
+        max-width: 34ch;
+        color: rgba(247, 245, 240, 0.72);
+        font-size: 0.95rem;
+      }
+
+      #track {
+        width: min(320px, 70vw);
+        height: 10px;
+        border-radius: 999px;
+        background: rgba(247, 245, 240, 0.16);
+        overflow: hidden;
+      }
+
+      #fill {
+        width: 0%;
+        height: 100%;
+        border-radius: 999px;
+        background: linear-gradient(90deg, var(--yellow), var(--orange));
+        transition: width 200ms linear;
+      }
+
+      #percent {
+        font-variant-numeric: tabular-nums;
+        font-weight: 600;
+        color: var(--yellow);
+      }
+
+      #banner {
+        position: fixed;
+        left: 50%;
+        bottom: 1rem;
+        z-index: 4;
+        transform: translateX(-50%);
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      #banner div {
+        padding: 0.6rem 1rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+        background: var(--yellow);
+        color: var(--navy-deep);
+      }
+
+      #banner div.error {
+        background: #d7263d;
+        color: #fff;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        #fill,
+        #bar a.home,
+        #bar button {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header id="bar">
+      <h1 id="title">Meat &amp; Eat<span>Poppanda Interactive</span></h1>
+      <a class="home" href="https://poppanda.net/">← Poppanda</a>
+      <button id="fullscreen" type="button" hidden>Fullscreen</button>
+    </header>
+
+    <div id="stage">
+      <canvas id="unity-canvas" tabindex="-1"></canvas>
+      <div id="loader">
+        <h1>Meat &amp; Eat</h1>
+        <p>Loading the shop. First visit pulls about 24 MB, after that it is cached.</p>
+        <div id="track"><div id="fill"></div></div>
+        <p id="percent">0%</p>
+      </div>
+    </div>
+
+    <div id="banner"></div>
+
+    <script>
+      var canvas = document.querySelector('#unity-canvas');
+      var banner = document.querySelector('#banner');
+
+      function unityShowBanner(msg, type) {
+        var div = document.createElement('div');
+        div.textContent = msg;
+        if (type === 'error') div.className = 'error';
+        banner.appendChild(div);
+        if (type !== 'error') {
+          setTimeout(function () {
+            div.remove();
+          }, 5000);
+        }
+      }
+
+      var buildUrl = 'Build';
+      var config = {
+        arguments: [],
+        dataUrl: buildUrl + '/meat-and-eat-build.data.unityweb',
+        frameworkUrl: buildUrl + '/meat-and-eat-build.framework.js.unityweb',
+        codeUrl: buildUrl + '/meat-and-eat-build.wasm.unityweb',
+        streamingAssetsUrl: 'StreamingAssets',
+        companyName: 'Poppanda Interactive',
+        // Unity kayıt yolunu bu adla kurar; oynayanların ilerlemesi bir yayından
+        // diğerine taşınsın diye motorun ürettiği hâli aynen bırakıldı.
+        productName: 'Meat _ Eat',
+        productVersion: '0.1.0',
+        showBanner: unityShowBanner,
+      };
+
+      // Oyuncu sekmeyi kapatıp döndüğünde kaydı bulsun.
+      config.autoSyncPersistentDataPath = true;
+
+      var script = document.createElement('script');
+      script.src = buildUrl + '/meat-and-eat-build.loader.js';
+      script.onload = function () {
+        createUnityInstance(canvas, config, function (progress) {
+          var percent = Math.round(progress * 100);
+          document.querySelector('#fill').style.width = percent + '%';
+          document.querySelector('#percent').textContent = percent + '%';
+        })
+          .then(function (unityInstance) {
+            document.querySelector('#loader').remove();
+            var button = document.querySelector('#fullscreen');
+            button.hidden = false;
+            button.onclick = function () {
+              unityInstance.SetFullscreen(1);
+            };
+            canvas.focus();
+          })
+          .catch(function (message) {
+            document.querySelector('#loader').innerHTML =
+              '<h1>Could not start</h1><p>' + message + '</p>';
+          });
+      };
+      script.onerror = function () {
+        document.querySelector('#loader').innerHTML =
+          '<h1>Could not start</h1><p>The game files failed to download. Refresh the page to try again.</p>';
+      };
+      document.body.appendChild(script);
+    </script>
+  </body>
+</html>

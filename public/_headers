@@ -8,3 +8,13 @@
 
 /media/*
   Cache-Control: public, max-age=604800
+
+# Unity WebGL çıktısı. .unityweb dosyaları motorun kendi brotli kapsayıcısıdır
+# ve tarayıcıda loader tarafından açılır; sunucu bunlara Content-Encoding
+# koyarsa loader "incorrectly enabled" diyip oyunu başlatmaz. Bu yüzden
+# burada yalnızca önbellek kuralı var, sıkıştırma başlığı yok.
+/play/*/Build/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/play/*
+  X-Frame-Options: SAMEORIGIN

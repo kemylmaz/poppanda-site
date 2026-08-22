@@ -35,6 +35,7 @@ export const games: Game[] = [
   {
     slug: 'meat-and-eat',
     playable: true,
+    playUrl: '/play/meat-and-eat/',
     title: 'Meat & Eat',
     formerTitle: 'Shawarma Tycoon',
     tagline: {
