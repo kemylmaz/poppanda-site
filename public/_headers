@@ -9,12 +9,13 @@
 /media/*
   Cache-Control: public, max-age=604800
 
-# Unity WebGL çıktısı. .unityweb dosyaları motorun kendi brotli kapsayıcısıdır
-# ve tarayıcıda loader tarafından açılır; sunucu bunlara Content-Encoding
-# koyarsa loader "incorrectly enabled" diyip oyunu başlatmaz. Bu yüzden
-# burada yalnızca önbellek kuralı var, sıkıştırma başlığı yok.
-/play/*/Build/*
-  Cache-Control: public, max-age=31536000, immutable
-
-/play/*
-  X-Frame-Options: SAMEORIGIN
+# Unity WebGL çıktısı (/play/…) için bilerek kural yazılmadı:
+#
+# Content-Encoding verilmemeli. .unityweb dosyaları motorun kendi brotli
+# kapsayıcısıdır, tarayıcıda loader açar; başlığı gören loader "incorrectly
+# enabled" deyip oyunu hiç başlatmaz.
+#
+# Uzun ömürlü önbellek de verilmemeli. Dosya adları her yayında aynı kalıyor
+# (…build.data.unityweb), yani immutable bir kural oyuncuyu eski sürüme
+# kilitler. Cloudflare'in varsayılanı ETag ile doğrulama: 24 MB yeniden
+# inmez, yalnız bir 304 alınır ve yeni yayın anında ulaşır.
