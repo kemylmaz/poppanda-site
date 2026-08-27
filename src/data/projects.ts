@@ -18,7 +18,7 @@ export interface Game {
   platforms?: string[];
   /** Accent colour used for the card and the hero. */
   accent: string;
-  /** Path under /public, e.g. /media/meat-and-eat-cover.png */
+  /** Square artwork shown beside the game title. Path under /public. */
   cover?: string;
   shots?: { src: string; alt: Localized }[];
   /** YouTube video id for a trailer. */
@@ -54,6 +54,7 @@ export const games: Game[] = [
     engine: 'Unity',
     platforms: ['Web', 'Mobile'],
     accent: '#F26722',
+    cover: '/media/games/meat-and-eat-icon.webp',
     featured: true,
   },
   {

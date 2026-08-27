@@ -10,17 +10,32 @@ const number = String(index + 1).padStart(2, '0');
 
 {/* The whole row leads to the game's page; when there is something to play, a
     second link sits on top of it and goes straight to the build. */}
-<div class="row" style={`--row-accent:${game.accent}`} data-reveal>
+<div class:list={['row', { 'row--with-cover': game.cover }]} style={`--row-accent:${game.accent}`} data-reveal>
   <span class="num" aria-hidden="true">{number}</span>
 
-  <span class="body">
-    <span class="title">
-      <h3>
-        <a class="cover" href={localizePath(`/games/${game.slug}`, lang)}>{game.title}</a>
-      </h3>
-      {game.formerTitle && <span class="former">ex · {game.formerTitle}</span>}
+  <span class:list={['body', { 'body--with-cover': game.cover }]}>
+    {game.cover && (
+      <span class="art" aria-hidden="true">
+        <img
+          src={game.cover}
+          alt=""
+          width="512"
+          height="512"
+          loading="lazy"
+          decoding="async"
+        />
+      </span>
+    )}
+
+    <span class="copy">
+      <span class="title">
+        <h3>
+          <a class="cover" href={localizePath(`/games/${game.slug}`, lang)}>{game.title}</a>
+        </h3>
+        {game.formerTitle && <span class="former">ex · {game.formerTitle}</span>}
+      </span>
+      <span class="tagline">{game.tagline[lang]}</span>
     </span>
-    <span class="tagline">{game.tagline[lang]}</span>
   </span>
 
   <span class="meta">
@@ -81,7 +96,42 @@ const number = String(index + 1).padStart(2, '0');
     font-variant-numeric: tabular-nums;
   }
 
-  .body { display: grid; gap: 0.35rem; min-width: 0; }
+  .art {
+    width: 100%;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border: 3px solid var(--line);
+    border-radius: 22%;
+    background: var(--row-accent);
+    box-shadow: 4px 4px 0 var(--shadow-color);
+    transform: rotate(-1.5deg);
+    transition: transform var(--mid) var(--ease-out), box-shadow var(--mid) var(--ease-out);
+  }
+
+  .art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .row:hover .art,
+  .row:focus-within .art {
+    transform: translate(-2px, -2px) rotate(0deg);
+    box-shadow: 7px 7px 0 var(--shadow-color);
+  }
+
+  .body,
+  .copy {
+    display: grid;
+    gap: 0.35rem;
+    min-width: 0;
+  }
+
+  .body--with-cover {
+    grid-template-columns: clamp(4.75rem, 7vw, 5.5rem) minmax(0, 1fr);
+    align-items: center;
+    column-gap: var(--space-3);
+  }
 
   .title { display: flex; align-items: baseline; gap: 0.75rem; flex-wrap: wrap; }
   .title h3 { margin: 0; font-size: var(--step-2); }
@@ -161,12 +211,23 @@ const number = String(index + 1).padStart(2, '0');
   @media (max-width: 60rem) {
     .row { grid-template-columns: auto minmax(0, 1fr) auto; }
     .meta { grid-column: 2 / -1; }
+    .play,
+    .go {
+      grid-column: 3;
+      grid-row: 1;
+    }
   }
 
   @media (max-width: 40rem) {
     .row { grid-template-columns: auto minmax(0, 1fr); gap: var(--space-3); }
     .go { display: none; }
-    .play { grid-column: 2 / -1; justify-self: start; }
+    .play { grid-column: 2 / -1; grid-row: auto; justify-self: start; }
     .meta { flex-wrap: wrap; gap: var(--space-2); }
+
+    .body--with-cover {
+      grid-template-columns: 4rem minmax(0, 1fr);
+      column-gap: 0.75rem;
+      align-items: start;
+    }
   }
 </style>

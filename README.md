@@ -26,7 +26,8 @@ oluştur. `sablon.tr.md` dosyasını kopyalaman en kolayı — içindeki `draft`
 kimliğini yaz (`youtube.com/watch?v=` sonrası gelen kısım).
 
 **Görseller:** `public/media/` altına koy, veriye `/media/dosya.png` diye
-referans ver.
+referans ver. Bir oyun nesnesine kare bir `cover` görseli eklersen ikon ana
+sayfadaki ve `/games` sayfasındaki oyun satırında otomatik olarak görünür.
 
 **Arayüz metinleri:** `src/i18n/ui.ts`. **Biyografi:** `src/views/About.astro`.
 **E-posta ve sosyal linkler:** `src/data/projects.ts` içindeki `site` nesnesi.
