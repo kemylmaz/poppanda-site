@@ -124,7 +124,7 @@ export const games: Game[] = [
     engine: 'Three.js',
     platforms: ['Web', 'Mobile'],
     accent: '#D83A8D',
-    cover: '/media/games/wash-and-roll-icon.webp',
+    cover: '/media/games/wash-and-roll-icon-v2.webp',
     sourceUrl: 'https://github.com/kemylmaz/wash-and-roll',
     featured: true,
   },
