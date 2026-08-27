@@ -100,6 +100,7 @@ export const games: Game[] = [
     engine: 'Unity',
     platforms: ['Web', 'Mobile'],
     accent: '#F7C51E',
+    cover: '/media/games/minibus-tycoon-icon.webp',
     featured: true,
   },
   {
@@ -122,7 +123,8 @@ export const games: Game[] = [
     role: { en: 'Design, code', tr: 'Tasarım, kod' },
     engine: 'Three.js',
     platforms: ['Web', 'Mobile'],
-    accent: '#69B8B2',
+    accent: '#D83A8D',
+    cover: '/media/games/wash-and-roll-icon.webp',
     sourceUrl: 'https://github.com/kemylmaz/wash-and-roll',
     featured: true,
   },
