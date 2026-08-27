@@ -102,6 +102,30 @@ export const games: Game[] = [
     featured: true,
   },
   {
+    slug: 'wash-and-roll',
+    playable: true,
+    playUrl: 'https://wash-and-roll.poppanda.net',
+    title: 'Wash & Roll',
+    tagline: {
+      en: 'Scrub the dirt away and watch the colour come back.',
+      tr: 'Kiri ov, altından çıkan rengi izle.',
+    },
+    description: [
+      {
+        en: 'Take the rug off the truck and scrub it until the pattern shows through, then dry it, roll it and hand it to the customer. Ten days, a wallet that carries over, and upgrades that shave seconds off every step. Every couple of shifts the shop itself gets a visible facelift.',
+        tr: 'Halıyı kamyondan al, deseni ortaya çıkana kadar ov; sonra kurut, sar ve müşteriye ver. On gün, günler arası taşınan bir cüzdan ve her adımdan saniye kırpan yükseltmeler. Birkaç vardiyada bir dükkânın kendisi gözle görülür şekilde yenileniyor.',
+      },
+    ],
+    status: 'in-development',
+    year: '2026',
+    role: { en: 'Design, code', tr: 'Tasarım, kod' },
+    engine: 'Three.js',
+    platforms: ['Web', 'Mobile'],
+    accent: '#69B8B2',
+    sourceUrl: 'https://github.com/kemylmaz/wash-and-roll',
+    featured: true,
+  },
+  {
     slug: 'mayor-of-medieval',
     playable: true,
     title: 'Mayor of Medieval',
